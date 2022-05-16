@@ -78,7 +78,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"node scraping.js"
+    "start":"nodemon scraping.js"
   },
   "keywords": [],
   "author": "",
