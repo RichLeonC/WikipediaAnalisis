@@ -1,7 +1,7 @@
 const cheerio = require("cheerio");// incluir cheerio
 const request = require("request-promise"); // incluir respuestas 
 const fs = require('fs-extra');
-var natural = require("natural");
+var natural = require('natural');
 //const writeStream =  fs.createWriteStream('wikiviky.csv'); // creacion del archivo
 
 
@@ -17,9 +17,16 @@ const titulo =  $('Title').text();
 
 
 natural.PorterStemmer.attach();
-console.log("i am waking up to the sounds of chainsaws".tokenizeAndStem());
-console.log("chainsaws".stem());
+console.log(titulo.tokenizeAndStem());
+//console.log("I can see that we are going to be friends".tokenizeAndStem());
+
+
+
 
 
 }
+
+
+
 inicio();
+
