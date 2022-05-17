@@ -15,10 +15,7 @@ const $ =  await  request ({// estas lineas de codigo son para trasformar la pag
  //console.log($('div').find("h2").html());
 let titulos = [];
 
-titulos.forEach(element => {
-    console.log(element);
-});
- 
+const titulo = $('title');
 
 
 
@@ -30,27 +27,31 @@ $('#content').find('h4').each((i,el)=>(titulos.push($(el).text().replace('[edit]
 $('#content').find('h5').each((i,el)=>(titulos.push($(el).text().replace('[edit]',''))))
 $('#content').find('h6').each((i,el)=>(titulos.push($(el).text().replace('[edit]',''))))
 
-console.log(titulos);
+//console.log(titulos);
 
-writeStream.write('titulos|parrafos');
+writeStream.write('titulos|parrafos⧵n');
 
-writeStream.write(`${titulos}|${titulos}`);
 
-const texto = $('.mw-parser-output ').find('p' );
-//const lis = $('.div-col').remove();
-//const tags = $('.mw-parser-output .div-col').find('ul');
+const texto = $('.mw-parser-output ').find('p').text();
+const lis = $('.div-col').find('ul');
+const tags = $('.mw-parser-output .div-col').find('ul');
 //console.log(texto.text());
-console.log(texto.text());
+//console.log(texto);
+
+
+
 
 var natural = require('natural');
 var tokenizer = new natural.WordTokenizer(); 
-var tokens = tokenizer.tokenize(titulo); 
+var tokens = tokenizer.tokenize(texto); 
 stemming = []
 tokens.forEach(el  =>{
-    stemming.push(natural.PorterStemmer.stem(el));
-})
+    if ((el.length>3) && isNaN(el)){
+    stemming.push(natural.PorterStemmer.stem(el));}
+}) 
+writeStream.write(`${stemming}`);
 
-//console.log(stemming);
+console.log(stemming);
 
 //console.log("I can see that we are going to be friends".tokenizeAndStem());
 
