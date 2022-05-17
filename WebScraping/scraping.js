@@ -34,15 +34,21 @@ titulos.forEach(element => {
 });
  */
 
+const texto = $('.mw-parser-output ').find('p' );
+//const lis = $('.div-col').remove();
+//const tags = $('.mw-parser-output .div-col').find('ul');
+//console.log(texto.text());
+console.log(texto.text());
+
 var natural = require('natural');
 var tokenizer = new natural.WordTokenizer(); 
-var tokens = tokenizer.tokenize("loves, falls, connecting, opened, ranking, going, living, was, is, am "); 
+var tokens = tokenizer.tokenize(titulo); 
 stemming = []
 tokens.forEach(el  =>{
     stemming.push(natural.PorterStemmer.stem(el));
 })
 
-console.log(stemming);
+//console.log(stemming);
 
 //console.log("I can see that we are going to be friends".tokenizeAndStem());
 
