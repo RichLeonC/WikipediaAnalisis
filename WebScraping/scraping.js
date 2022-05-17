@@ -2,7 +2,7 @@ const cheerio = require("cheerio");// incluir cheerio
 const request = require("request-promise"); // incluir respuestas 
 const fs = require('fs-extra');
 //var natural = require("natural");
-//const writeStream =  fs.createWriteStream('wikiviky.csv'); // creacion del archivo
+const writeStream =  fs.createWriteStream('wikiviky.csv'); // creacion del archivo
 
 
 async function inicio(){
@@ -12,27 +12,29 @@ const $ =  await  request ({// estas lineas de codigo son para trasformar la pag
 }) // petición al sitio web que se le queiere hacer web scraping
 
 
-
-//console.log($);
-
-const titulo =  $('Title').text();
  //console.log($('div').find("h2").html());
-/*  let titulos = [];
-$("h1").each((i,el)=>{
-    // var titulos = $(el).find('h2').text();
-    //  console.log($(el).text().replace('[edit]',""));
-     titulos.push($(el).text().replace('[edit]',""));
- })
-$("h2").each((i,el)=>{
-   // var titulos = $(el).find('h2').text();
-    // console.log($(el).text().replace('[edit]',""));
-    titulos.push($(el).text().replace('[edit]',""));
-})
+let titulos = [];
 
 titulos.forEach(element => {
     console.log(element);
 });
- */
+ 
+
+
+
+//Obtienes todos los titulos y subtitulos, y los agrega al arreglo
+$('#content').find('h1').each((i,el)=>(titulos.push($(el).text().replace('[edit]',''))))
+$('#content').find('h2').each((i,el)=>(titulos.push($(el).text().replace('[edit]',''))))
+$('#content').find('h3').each((i,el)=>(titulos.push($(el).text().replace('[edit]',''))))
+$('#content').find('h4').each((i,el)=>(titulos.push($(el).text().replace('[edit]',''))))
+$('#content').find('h5').each((i,el)=>(titulos.push($(el).text().replace('[edit]',''))))
+$('#content').find('h6').each((i,el)=>(titulos.push($(el).text().replace('[edit]',''))))
+
+console.log(titulos);
+
+writeStream.write('titulos|parrafos');
+
+writeStream.write(`${titulos}|${titulos}`);
 
 var natural = require('natural');
 var tokenizer = new natural.WordTokenizer(); 
@@ -42,7 +44,7 @@ tokens.forEach(el  =>{
     stemming.push(natural.PorterStemmer.stem(el));
 })
 
-console.log(stemming);
+//console.log(stemming);
 
 //console.log("I can see that we are going to be friends".tokenizeAndStem());
 
@@ -51,7 +53,6 @@ console.log(stemming);
 // natural.PorterStemmer.attach();
 // console.log("i am waking up to the sounds of chainsaws".tokenizeAndStem());
 // console.log("chainsaws".stem());
-
 
 }
 
