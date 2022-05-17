@@ -37,7 +37,7 @@ const container1 = $('.row .col-md-8').children();
 //console.log (citas.html());
   
 
-writeStream.write('Quote|Author|Tags⧵n');//estructura que lleva el archivo separado por columnas
+writeStream.write('Quote|Author|Tags\n');//estructura que lleva el archivo separado por columnas
 
 $('.quote').each((i,el)=>{
     const tags = [];
