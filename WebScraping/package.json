@@ -52,6 +52,8 @@
     "lodash": "^4.17.21",
     "mime-db": "^1.52.0",
     "mime-types": "^2.1.35",
+    "natural": "^5.2.2",
+    "node-nlp": "^4.24.0",
     "nth-check": "^2.0.1",
     "oauth-sign": "^0.9.0",
     "parse5": "^6.0.1",
@@ -78,7 +80,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"nodemon scraping.js"
+    "start": "nodemon scraping.js"
   },
   "keywords": [],
   "author": "",
