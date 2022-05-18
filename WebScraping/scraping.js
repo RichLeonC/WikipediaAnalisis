@@ -3,6 +3,7 @@ const request = require("request-promise"); // incluir respuestas
 const fs = require('fs-extra');
 var natural = require('natural');
 const writeStream = fs.createWriteStream('wikiviky.csv'); // creacion del archivo
+var tokenizer = new natural.WordTokenizer();
 
 //Funcion que se encarga de obtener todos los titulos de la pagina indicada por parametro
 function obtenerTitulos($){
@@ -31,7 +32,6 @@ function obtenerSubTitulos($){
 function stemmingTitulosSub(array){
     let subTitulosStemming = [];
     let tokenUnido = '';
-    let tokenizer = new natural.WordTokenizer();
     array.forEach(subtitulo=>{
         let tokens = tokenizer.tokenize(subtitulo);
         tokens.forEach(token=>{
@@ -47,12 +47,11 @@ function stemmingTitulosSub(array){
 function obtenerParrafos($){
     const texto = $('.mw-parser-output ').find('p').text();
     const lis = $('.div-col').find('ul').text();
-    return texto+lis;
+    var tokes = tokenizer.tokenize(texto+lis);
+    return tokes;
 }
 
-function obtenerParrafosStemming($){
-    var tokenizer = new natural.WordTokenizer();
-    var tokens = tokenizer.tokenize($);
+function obtenerParrafosStemming(tokens){
     stemming = []
     tokens.forEach(el => {
         if ((el.length > 3) && isNaN(el)) {
@@ -97,12 +96,6 @@ async function inicio() {
     //obtener todo el texto de la página
     const texto = obtenerParrafos($);
     palabrasParrafoStemming = obtenerParrafosStemming(texto);
-    console.log(texto);
-    console.log(palabrasParrafoStemming);
-    
-
-
-   
     writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}`);
   
 
