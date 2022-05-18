@@ -2,6 +2,8 @@ const cheerio = require("cheerio");// incluir cheerio
 const request = require("request-promise"); // incluir respuestas 
 const fs = require('fs-extra');
 var natural = require('natural');
+const { attr } = require("cheerio/lib/api/attributes");
+const { find } = require("lodash");
 const writeStream = fs.createWriteStream('wikiviky.csv'); // creacion del archivo
 var tokenizer = new natural.WordTokenizer();
 
@@ -73,11 +75,22 @@ function obtenerSubTitulosStemming($){
     return stemmingTitulosSub(subtitulos);
 }
 
+function obtenerImagenes($){
+    const sources = [];
+    const alts = [];
+
+    $('#content').find('img').each((el=>sources.push($(el).attr('src'))))
+    //$('#content').each((el=>sources.push($(el).find('img').attr('src'))))
+
+
+    console.log(sources);
+}
+
 
 
 async function inicio() {
     const $ = await request({// estas lineas de codigo son para trasformar la pagina en un objeto 
-        uri: 'https://en.wikipedia.org/wiki/Web_scraping', // funcion de cheerio para escaneo de pagina web
+        uri: 'https://en.wikipedia.org/wiki/Ludwig_van_Beethoven', // funcion de cheerio para escaneo de pagina web
         transform: body => cheerio.load(body) //html que se toma de la pagina
     }) // petición al sitio web que se le queiere hacer web scraping
 
@@ -98,7 +111,7 @@ async function inicio() {
     palabrasParrafoStemming = obtenerParrafosStemming(texto);
     writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}`);
   
-
+    obtenerImagenes($);
 
 }
 
