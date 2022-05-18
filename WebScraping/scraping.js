@@ -1,7 +1,6 @@
 const cheerio = require("cheerio");// incluir cheerio
 const request = require("request-promise"); // incluir respuestas 
 const fs = require('fs-extra');
-//var natural = require("natural");
 var natural = require('natural');
 const writeStream = fs.createWriteStream('wikiviky.csv'); // creacion del archivo
 
@@ -61,6 +60,28 @@ function obtenerSubTitulosStemming($){
     return subTitulosStemming;
 }
 
+function obtenerParrafos($){
+    const texto = $('.mw-parser-output ').find('p').text();
+    const lis = $('.div-col').find('ul').text();
+    return texto+lis;
+}
+
+function obtenerParrafosStemming($){
+    var tokenizer = new natural.WordTokenizer();
+    var tokens = tokenizer.tokenize($);
+    stemming = []
+    tokens.forEach(el => {
+        if ((el.length > 3) && isNaN(el)) {
+            stemming.push(natural.PorterStemmer.stem(el));
+        }
+    })
+    return stemming;
+
+}
+
+
+
+
 async function inicio() {
     const $ = await request({// estas lineas de codigo son para trasformar la pagina en un objeto 
         uri: 'https://en.wikipedia.org/wiki/Web_scraping', // funcion de cheerio para escaneo de pagina web
@@ -71,36 +92,26 @@ async function inicio() {
     let titulosStemming=[];
     let subtitulos = [];
     let subTitulosStemming=[];
-    writeStream.write('Titulos|Subtitulos|Parrafos|TitulosStemming|SubTitulosStemming\n');
+    let palabrasParrafoStemming = [];
+    writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming\n');
     //Obtiene todos los titulos y subtitulos
     titulos = obtenerTitulos($);
     subtitulos = obtenerSubTitulos($);
     titulosStemming = obtenerTitulosStemming($);
     subTitulosStemming = obtenerSubTitulosStemming($);
 
-    const texto = $('.mw-parser-output ').find('p').text();
-    const lis = $('.div-col').find('ul');
-    const tags = $('.mw-parser-output .div-col').find('ul');
-
-    var tokenizer = new natural.WordTokenizer();
-    var tokens = tokenizer.tokenize(texto);
-    stemming = []
-    tokens.forEach(el => {
-        if ((el.length > 3) && isNaN(el)) {
-            stemming.push(natural.PorterStemmer.stem(el));
-        }
-    })
-    // writeStream.write(`${stemming}`);
-    writeStream.write(`${titulos}|${subtitulos}|${stemming}|${titulosStemming}|${subTitulosStemming}`);
-    console.log(stemming);
-
-    //console.log("I can see that we are going to be friends".tokenizeAndStem());
+    //obtener todo el texto de la página
+    const texto = obtenerParrafos($);
+    palabrasParrafoStemming = obtenerParrafosStemming(texto);
+    console.log(texto);
+    console.log(palabrasParrafoStemming);
+    
 
 
+   
+    writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}`);
+  
 
-    // natural.PorterStemmer.attach();
-    // console.log("i am waking up to the sounds of chainsaws".tokenizeAndStem());
-    // console.log("chainsaws".stem());
 
 }
 
