@@ -26,30 +26,14 @@ function obtenerSubTitulos($){
     return subtitulosF;
 }
 
-//Funcion que se encarga de obtener los titulos y subitulos y aplicarles stemming, de la pagina recibida por parametro
-function obtenerTitulosStemming($){
-    const titulos = obtenerTitulos($);
-    let titulosStemming = [];
-    let tokenUnido = '';
-    let tokenizer = new natural.WordTokenizer();
-    titulos.forEach(titulo=>{
-        let tokens = tokenizer.tokenize(titulo);
-        tokens.forEach(token=>{
-            tokenUnido+=natural.PorterStemmer.stem(token).concat(" ");
-            
-        })
-        titulosStemming.push(tokenUnido);
-        tokenUnido='';
-    })
-    return titulosStemming;
-}
 
-function obtenerSubTitulosStemming($){
-    const subtitulos = obtenerSubTitulos($);
+//Funcion que se encarga de obtener los titulos o subitulos y aplicarles stemming, de la pagina recibida por parametro
+
+function stemmingTitulosSub(array){
     let subTitulosStemming = [];
     let tokenUnido = '';
     let tokenizer = new natural.WordTokenizer();
-    subtitulos.forEach(subtitulo=>{
+    array.forEach(subtitulo=>{
         let tokens = tokenizer.tokenize(subtitulo);
         tokens.forEach(token=>{
             tokenUnido+=natural.PorterStemmer.stem(token).concat(" ");
@@ -60,6 +44,20 @@ function obtenerSubTitulosStemming($){
     })
     return subTitulosStemming;
 }
+
+//Retorna los titulos con stemming
+function obtenerTitulosStemming($){
+    const titulos = obtenerTitulos($);
+    return stemmingTitulosSub(titulos);
+}
+
+//Retorna los subtitulos con stemming
+function obtenerSubTitulosStemming($){
+    const subtitulos = obtenerSubTitulos($);
+    return stemmingTitulosSub(subtitulos);
+}
+
+
 
 async function inicio() {
     const $ = await request({// estas lineas de codigo son para trasformar la pagina en un objeto 
@@ -94,13 +92,6 @@ async function inicio() {
     writeStream.write(`${titulos}|${subtitulos}|${stemming}|${titulosStemming}|${subTitulosStemming}`);
     console.log(stemming);
 
-    //console.log("I can see that we are going to be friends".tokenizeAndStem());
-
-
-
-    // natural.PorterStemmer.attach();
-    // console.log("i am waking up to the sounds of chainsaws".tokenizeAndStem());
-    // console.log("chainsaws".stem());
 
 }
 
