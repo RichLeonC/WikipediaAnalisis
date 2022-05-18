@@ -25,30 +25,14 @@ function obtenerSubTitulos($){
     return subtitulosF;
 }
 
-//Funcion que se encarga de obtener los titulos y subitulos y aplicarles stemming, de la pagina recibida por parametro
-function obtenerTitulosStemming($){
-    const titulos = obtenerTitulos($);
-    let titulosStemming = [];
-    let tokenUnido = '';
-    let tokenizer = new natural.WordTokenizer();
-    titulos.forEach(titulo=>{
-        let tokens = tokenizer.tokenize(titulo);
-        tokens.forEach(token=>{
-            tokenUnido+=natural.PorterStemmer.stem(token).concat(" ");
-            
-        })
-        titulosStemming.push(tokenUnido);
-        tokenUnido='';
-    })
-    return titulosStemming;
-}
 
-function obtenerSubTitulosStemming($){
-    const subtitulos = obtenerSubTitulos($);
+//Funcion que se encarga de obtener los titulos o subitulos y aplicarles stemming, de la pagina recibida por parametro
+
+function stemmingTitulosSub(array){
     let subTitulosStemming = [];
     let tokenUnido = '';
     let tokenizer = new natural.WordTokenizer();
-    subtitulos.forEach(subtitulo=>{
+    array.forEach(subtitulo=>{
         let tokens = tokenizer.tokenize(subtitulo);
         tokens.forEach(token=>{
             tokenUnido+=natural.PorterStemmer.stem(token).concat(" ");
@@ -76,9 +60,19 @@ function obtenerParrafosStemming($){
         }
     })
     return stemming;
-
 }
 
+//Retorna los titulos con stemming
+function obtenerTitulosStemming($){
+    const titulos = obtenerTitulos($);
+    return stemmingTitulosSub(titulos);
+}
+
+//Retorna los subtitulos con stemming
+function obtenerSubTitulosStemming($){
+    const subtitulos = obtenerSubTitulos($);
+    return stemmingTitulosSub(subtitulos);
+}
 
 
 
