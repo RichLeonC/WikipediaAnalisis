@@ -2,8 +2,37 @@ const cheerio = require("cheerio");// incluir cheerio
 const request = require("request-promise"); // incluir respuestas 
 const fs = require('fs-extra');
 //var natural = require("natural");
+var natural = require('natural');
 const writeStream = fs.createWriteStream('wikiviky.csv'); // creacion del archivo
 
+//Funcion que se encarga de obtener todos los titulos y subitulos de la pagina indicada por parametro
+function obtenerTitulos($){
+    let titulosF = [];
+    etiquetas = ['h1','h2','h3','h4','h5','h6'];
+    for(e in etiquetas){
+        $('#content').find(etiquetas[e]).each((i, el) => (titulosF.push($(el).text().replace('[edit]', ''))))
+    } 
+
+    return titulosF;
+}
+
+//Funcion que se encarga de obtener los titulos y subitulos y aplicarles stemming, de la pagina recibida por parametro
+function obtenerTitulosStemming($){
+    const titulos = obtenerTitulos($);
+    let titulosStemming = [];
+    let tokenUnido = '';
+    let tokenizer = new natural.WordTokenizer();
+    titulos.forEach(titulo=>{
+        let tokens = tokenizer.tokenize(titulo);
+        tokens.forEach(token=>{
+            tokenUnido+=natural.PorterStemmer.stem(token).concat(" ");
+            
+        })
+        titulosStemming.push(tokenUnido);
+        tokenUnido='';
+    })
+    return titulosStemming;
+}
 
 async function inicio() {
     const $ = await request({// estas lineas de codigo son para trasformar la pagina en un objeto 
@@ -11,57 +40,29 @@ async function inicio() {
         transform: body => cheerio.load(body) //html que se toma de la pagina
     }) // petición al sitio web que se le queiere hacer web scraping
 
-    let titulos = "";
+    let titulos = [];
+    let titulosStemming=[];
+    writeStream.write('Titulos|Parrafos|TitulosStemming\n');
+    //Obtiene todos los titulos y subtitulos
+    titulos = obtenerTitulos($);
+    titulosStemming = obtenerTitulosStemming($);
+    const texto = $('.mw-parser-output ').find('p').text();
+    const lis = $('.div-col').find('ul');
+    const tags = $('.mw-parser-output .div-col').find('ul');
 
-    //Obtiene todos los titulos y subtitulos, y los concantena
-    writeStream.write('Titulos|Parrafos\n');
+    var tokenizer = new natural.WordTokenizer();
+    var tokens = tokenizer.tokenize(texto);
+    stemming = []
+    tokens.forEach(el => {
+        if ((el.length > 3) && isNaN(el)) {
+            stemming.push(natural.PorterStemmer.stem(el));
+        }
+    })
+    // writeStream.write(`${stemming}`);
+    writeStream.write(`${titulos}|${stemming}|${titulosStemming}`);
+    console.log(stemming);
 
-    $('#content').find('h1').each((i, el) => (titulos += $(el).text().replace('[edit]', '').concat("-")))
-    $('#content').find('h2').each((i, el) => (titulos += $(el).text().replace('[edit]', '').concat("-")))
-    $('#content').find('h3').each((i, el) => (titulos += $(el).text().replace('[edit]', '').concat("-")))
-    $('#content').find('h4').each((i, el) => (titulos += $(el).text().replace('[edit]', '').concat("-")))
-    $('#content').find('h5').each((i, el) => (titulos += $(el).text().replace('[edit]', '').concat("-")))
-    $('#content').find('h6').each((i, el) => (titulos += $(el).text().replace('[edit]', '').concat("-")))
-
-
-    // $('#content').find('h1').each((i,el)=>(titulos.push($(el).text().replace('[edit]',''))))
-    // $('#content').find('h2').each((i,el)=>(titulos.push($(el).text().replace('[edit]',''))))
-    // $('#content').find('h3').each((i,el)=>(titulos.push($(el).text().replace('[edit]',''))))
-    // $('#content').find('h4').each((i,el)=>(titulos.push($(el).text().replace('[edit]',''))))
-    // $('#content').find('h5').each((i,el)=>(titulos.push($(el).text().replace('[edit]',''))))
-    // $('#content').find('h6').each((i,el)=>(titulos.push($(el).text().replace('[edit]',''))))
-
-    writeStream.write(`${titulos}|Este fue mi error`);
-
-    console.log(titulos);
-
-
-
-
-
-
-const texto = $('.mw-parser-output ').find('p').text();
-const lis = $('.div-col').find('ul');
-const tags = $('.mw-parser-output .div-col').find('ul');
-//console.log(texto.text());
-//console.log(texto);
-
-
-
-
-var natural = require('natural');
-var tokenizer = new natural.WordTokenizer(); 
-var tokens = tokenizer.tokenize(texto); 
-stemming = []
-tokens.forEach(el  =>{
-    if ((el.length>3) && isNaN(el)){
-    stemming.push(natural.PorterStemmer.stem(el));}
-}) 
-writeStream.write(`${stemming}`);
-
-console.log(stemming);
-
-//console.log("I can see that we are going to be friends".tokenizeAndStem());
+    //console.log("I can see that we are going to be friends".tokenizeAndStem());
 
 
 
@@ -70,8 +71,6 @@ console.log(stemming);
     // console.log("chainsaws".stem());
 
 }
-
-
 
 inicio();
 
