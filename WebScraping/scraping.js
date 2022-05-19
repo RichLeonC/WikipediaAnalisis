@@ -101,6 +101,7 @@ function obtenerAutores($){
    
 }
 
+//Obtiene los src's o alts de las imagenes y los retorna.
 function obtenerImagenes($,filtro){
 
     const datos = [];
@@ -109,8 +110,8 @@ function obtenerImagenes($,filtro){
     })
 
     return datos;
-
 }
+
 
 async function inicio() {
     const $ = await request({// estas lineas de codigo son para trasformar la pagina en un objeto 
@@ -127,7 +128,7 @@ async function inicio() {
     let altImgs = [];
     let altImgsStemming = [];
     let autores = [];
-    writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming|SrcImgs|AltImgs\n');
+    writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming|SrcImgs|AltImgs|AltImgsStemming|\n');
     //Obtiene todos los titulos y subtitulos
     titulos = obtenerTitulos($);
     subtitulos = obtenerSubTitulos($);
@@ -140,8 +141,9 @@ async function inicio() {
     
     srcImgs = obtenerImagenes($,'src');
     altImgs = obtenerImagenes($,'alt');
-
-    writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}`);
+    altImgsStemming = stemmingTitulosSub(altImgs);
+    writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}
+    |${altImgsStemming}`);
   
    
 }
