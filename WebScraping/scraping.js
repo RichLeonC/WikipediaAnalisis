@@ -81,6 +81,24 @@ function obtenerReferencias($){
 
 }
 
+function obtenerTags($){
+    const tags = $('.catlinks .mw-normal-catlinks').find('ul').text();
+    return tags;
+}
+
+function obtenerAutores($){
+    const autores =  $('div[class="navbox authority-control"]').find('ul').text();
+    var tokes = tokenizer.tokenize(autores);
+    limpios = []
+    tokes.forEach(el => {
+        if (isNaN(el)) {
+            limpios.push(el);
+        }
+    })
+    return limpios;
+   
+}
+
 function obtenerImagenes($){
     const sources = [];
     const alts = [];
@@ -96,7 +114,7 @@ function obtenerImagenes($){
 
 async function inicio() {
     const $ = await request({// estas lineas de codigo son para trasformar la pagina en un objeto 
-        uri: 'https://en.wikipedia.org/wiki/Ludwig_van_Beethoven', // funcion de cheerio para escaneo de pagina web
+        uri: 'https://en.wikipedia.org/w/index.php?title=Ludwig_van_Beethoven&oldid=1087389025', // funcion de cheerio para escaneo de pagina web
         transform: body => cheerio.load(body) //html que se toma de la pagina
     }) // petición al sitio web que se le queiere hacer web scraping
 
@@ -105,18 +123,19 @@ async function inicio() {
     let subtitulos = [];
     let subTitulosStemming=[];
     let palabrasParrafoStemming = [];
+    let autores = [];
     writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming\n');
     //Obtiene todos los titulos y subtitulos
     titulos = obtenerTitulos($);
     subtitulos = obtenerSubTitulos($);
     titulosStemming = obtenerTitulosStemming($);
     subTitulosStemming = obtenerSubTitulosStemming($);
-
+    autores = obtenerAutores($);
     //obtener todo el texto de la página
     const texto = obtenerParrafos($);
     palabrasParrafoStemming = obtenerParrafosStemming(texto);
    // console.log( $('.mw-parser-output .references').find('li').text());
-    console.log($);
+    console.log(autores);
 
     writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}`);
   
