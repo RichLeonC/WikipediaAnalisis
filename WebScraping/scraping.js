@@ -2,6 +2,8 @@ const cheerio = require("cheerio");// incluir cheerio
 const request = require("request-promise"); // incluir respuestas 
 const fs = require('fs-extra');
 var natural = require('natural');
+const { attr } = require("cheerio/lib/api/attributes");
+const { find } = require("lodash");
 const writeStream = fs.createWriteStream('wikiviky.csv'); // creacion del archivo
 var tokenizer = new natural.WordTokenizer();
 
@@ -77,8 +79,17 @@ function obtenerReferencias($){
     const referencias =  $('.mw-parser-output .reflist reflist-columns references-column-width').find('ol').text();
     return referencias;
 
+}
+
+function obtenerImagenes($){
+    const sources = [];
+    const alts = [];
+
+    $('#content').find('img').each((el=>sources.push($(el).attr('src'))))
+    //$('#content').each((el=>sources.push($(el).find('img').attr('src'))))
 
 
+   // console.log(sources);
 }
 
 
@@ -109,7 +120,7 @@ async function inicio() {
 
     writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}`);
   
-
+    obtenerImagenes($);
 
 }
 
