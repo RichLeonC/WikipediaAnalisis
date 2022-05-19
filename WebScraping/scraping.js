@@ -73,11 +73,19 @@ function obtenerSubTitulosStemming($){
     return stemmingTitulosSub(subtitulos);
 }
 
+function obtenerReferencias($){
+    const referencias =  $('.mw-parser-output .reflist reflist-columns references-column-width').find('ol').text();
+    return referencias;
+
+
+
+}
+
 
 
 async function inicio() {
     const $ = await request({// estas lineas de codigo son para trasformar la pagina en un objeto 
-        uri: 'https://en.wikipedia.org/wiki/Web_scraping', // funcion de cheerio para escaneo de pagina web
+        uri: 'https://en.wikipedia.org/wiki/Ludwig_van_Beethoven', // funcion de cheerio para escaneo de pagina web
         transform: body => cheerio.load(body) //html que se toma de la pagina
     }) // petición al sitio web que se le queiere hacer web scraping
 
@@ -96,6 +104,9 @@ async function inicio() {
     //obtener todo el texto de la página
     const texto = obtenerParrafos($);
     palabrasParrafoStemming = obtenerParrafosStemming(texto);
+   // console.log( $('.mw-parser-output .references').find('li').text());
+    console.log($);
+
     writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}`);
   
 
