@@ -46,6 +46,7 @@ function stemmingTitulosSub(array){
     return subTitulosStemming;
 }
 
+//Funcion que se encarga de obtener todas las palabras que hay en los parrafos de toda la pagina
 function obtenerParrafos($){
     const texto = $('.mw-parser-output ').find('p').text();
     const lis = $('.div-col').find('ul').text();
@@ -53,6 +54,7 @@ function obtenerParrafos($){
     return tokes;
 }
 
+//Pasa el stemming a todas las palabras
 function obtenerParrafosStemming(tokens){
     stemming = []
     tokens.forEach(el => {
@@ -81,18 +83,19 @@ function obtenerReferencias($){
 
 }
 
-function obtenerImagenes($){
+//Obtiene los src,alt de las imagenes de la pagina
+function obtenerImagenes($,filtro){
     const sources = [];
     const alts = [];
+    const datos = [];
 
-    $('#content').find('img').each((el=>sources.push($(el).attr('src'))))
-    //$('#content').each((el=>sources.push($(el).find('img').attr('src'))))
+    $('div[class="thumbinner"]').find('img').each((i,el)=>{
+        datos.push($(el).attr(filtro))
+    })
 
+    return datos;
 
-   // console.log(sources);
 }
-
-
 
 async function inicio() {
     const $ = await request({// estas lineas de codigo son para trasformar la pagina en un objeto 
@@ -105,6 +108,9 @@ async function inicio() {
     let subtitulos = [];
     let subTitulosStemming=[];
     let palabrasParrafoStemming = [];
+    let srcImgs = [];
+    let altImgs = [];
+    let altImgsStemming = [];
     writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming\n');
     //Obtiene todos los titulos y subtitulos
     titulos = obtenerTitulos($);
@@ -115,13 +121,17 @@ async function inicio() {
     //obtener todo el texto de la página
     const texto = obtenerParrafos($);
     palabrasParrafoStemming = obtenerParrafosStemming(texto);
-   // console.log( $('.mw-parser-output .references').find('li').text());
-    console.log($);
+    
+    src = obtenerImagenes($,'src');
+    altImgs = obtenerImagenes($,'alt');
+
+    console.log(srcImgs);
+    console.log(altImgs);
+    
 
     writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}`);
   
-    obtenerImagenes($);
-
+   
 }
 
 inicio();
