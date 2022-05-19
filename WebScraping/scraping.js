@@ -102,10 +102,8 @@ function obtenerAutores($){
 }
 
 function obtenerImagenes($,filtro){
-    const sources = [];
-    const alts = [];
-    const datos = [];
 
+    const datos = [];
     $('div[class="thumbinner"]').find('img').each((i,el)=>{
         datos.push($(el).attr(filtro))
     })
@@ -129,7 +127,7 @@ async function inicio() {
     let altImgs = [];
     let altImgsStemming = [];
     let autores = [];
-    writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming\n');
+    writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming|SrcImgs|AltImgs\n');
     //Obtiene todos los titulos y subtitulos
     titulos = obtenerTitulos($);
     subtitulos = obtenerSubTitulos($);
@@ -140,14 +138,10 @@ async function inicio() {
     const texto = obtenerParrafos($);
     palabrasParrafoStemming = obtenerParrafosStemming(texto);
     
-    src = obtenerImagenes($,'src');
+    srcImgs = obtenerImagenes($,'src');
     altImgs = obtenerImagenes($,'alt');
 
-    console.log(srcImgs);
-    console.log(altImgs);
-    
-
-    writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}`);
+    writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}`);
   
    
 }
