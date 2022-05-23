@@ -105,16 +105,13 @@ function obtenerAutores($){
    
 }
 
-function obtenerImagenes($){
-    const sources = [];
-    const alts = [];
-}
 //Obtiene los src's o alts de las imagenes y los retorna.
 function obtenerImagenes($,filtro){
-
-    $('#content').find('img').each((el=>sources.push($(el).attr('src'))))
-    //$('#content').each((el=>sources.push($(el).find('img').attr('src'))))
-
+    
+    let datos = []
+    $('div[class="thumbinner"]').find('img').each((i,el)=>{
+        datos.push($(el).attr(filtro))
+    })
     return datos;
 }
 
