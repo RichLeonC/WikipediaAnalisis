@@ -107,7 +107,7 @@ function obtenerAutores($){
 
 //Obtiene los src's o alts de las imagenes y los retorna.
 function obtenerImagenes($,filtro){
-    
+
     let datos = []
     $('div[class="thumbinner"]').find('img').each((i,el)=>{
         datos.push($(el).attr(filtro))
@@ -128,7 +128,10 @@ async function inicio() {
     let subTitulosStemming=[];
     let palabrasParrafoStemming = [];
     let autores = [];
-    writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming|SrcImgs|AltImgs|AltImgsStemming|\n');
+    let srcImgs = [];
+    let altImgs = [];
+    let altImgsStemming = [];
+    writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming|SrcImgs|AltImgs|AltImgsStemming\n');
     //Obtiene todos los titulos y subtitulos
     titulos = obtenerTitulos($);
     subtitulos = obtenerSubTitulos($);
