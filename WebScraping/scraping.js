@@ -6,6 +6,7 @@ const { attr } = require("cheerio/lib/api/attributes");
 const { find } = require("lodash");
 const writeStream = fs.createWriteStream('wikiviky.csv'); // creacion del archivo
 var tokenizer = new natural.WordTokenizer();
+const spider = require("./spider.js");
 
 //Funcion que se encarga de obtener todos los titulos de la pagina indicada por parametro
 function obtenerTitulos($){
