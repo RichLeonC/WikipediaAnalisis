@@ -147,7 +147,7 @@ async function inicio() {
     altImgs = obtenerImagenes($,'alt');
     altImgsStemming = stemmingTitulosSub(altImgs);
     writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}
-    |${altImgsStemming}`);
+    |${altImgsStemming}\n`);
   
 
 }
