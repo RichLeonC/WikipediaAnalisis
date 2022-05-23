@@ -46,7 +46,6 @@ function stemmingTitulosSub(array){
     return subTitulosStemming;
 }
 
-//Funcion que se encarga de obtener todas las palabras que hay en los parrafos de toda la pagina
 function obtenerParrafos($){
     const texto = $('.mw-parser-output ').find('p').text();
     const lis = $('.div-col').find('ul').text();
@@ -54,7 +53,6 @@ function obtenerParrafos($){
     return tokes;
 }
 
-//Pasa el stemming a todas las palabras
 function obtenerParrafosStemming(tokens){
     stemming = []
     tokens.forEach(el => {
@@ -83,10 +81,16 @@ function obtenerReferencias($){
 
 }
 
-function obtenerTags($){
-    const tags = $('.catlinks .mw-normal-catlinks').find('ul').text();
-    return tags;
+function obtenerLiks($){
+    const links = []
+    const referencias =  $('.mw-parser-output ').find('ul').attr('href');
+    links.forEach(el =>{
+            
+
+    })
+    
 }
+
 
 function obtenerAutores($){
     const autores =  $('div[class="navbox authority-control"]').find('ul').text();
@@ -101,16 +105,18 @@ function obtenerAutores($){
    
 }
 
-function obtenerImagenes($,filtro){
+function obtenerImagenes($){
+    const sources = [];
+    const alts = [];
 
-    const datos = [];
-    $('div[class="thumbinner"]').find('img').each((i,el)=>{
-        datos.push($(el).attr(filtro))
-    })
+    $('#content').find('img').each((el=>sources.push($(el).attr('src'))))
+    //$('#content').each((el=>sources.push($(el).find('img').attr('src'))))
 
-    return datos;
 
+   // console.log(sources);
 }
+
+
 
 async function inicio() {
     const $ = await request({// estas lineas de codigo son para trasformar la pagina en un objeto 
@@ -123,11 +129,8 @@ async function inicio() {
     let subtitulos = [];
     let subTitulosStemming=[];
     let palabrasParrafoStemming = [];
-    let srcImgs = [];
-    let altImgs = [];
-    let altImgsStemming = [];
     let autores = [];
-    writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming|SrcImgs|AltImgs\n');
+    writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming\n');
     //Obtiene todos los titulos y subtitulos
     titulos = obtenerTitulos($);
     subtitulos = obtenerSubTitulos($);
@@ -137,13 +140,13 @@ async function inicio() {
     //obtener todo el texto de la página
     const texto = obtenerParrafos($);
     palabrasParrafoStemming = obtenerParrafosStemming(texto);
-    
-    srcImgs = obtenerImagenes($,'src');
-    altImgs = obtenerImagenes($,'alt');
+   // console.log( $('.mw-parser-output .references').find('li').text());
+    console.log(autores);
 
-    writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}`);
+    writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}`);
   
-   
+    obtenerImagenes($);
+
 }
 
 inicio();
