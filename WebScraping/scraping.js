@@ -145,8 +145,9 @@ async function inicio() {
     writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}
     |${altImgsStemming}`);
   
-   
+ 
 }
+
 
 inicio();
 
