@@ -108,14 +108,15 @@ function obtenerAutores($){
 function obtenerImagenes($){
     const sources = [];
     const alts = [];
+}
+//Obtiene los src's o alts de las imagenes y los retorna.
+function obtenerImagenes($,filtro){
 
     $('#content').find('img').each((el=>sources.push($(el).attr('src'))))
     //$('#content').each((el=>sources.push($(el).find('img').attr('src'))))
 
-
-   // console.log(sources);
+    return datos;
 }
-
 
 
 async function inicio() {
@@ -130,7 +131,7 @@ async function inicio() {
     let subTitulosStemming=[];
     let palabrasParrafoStemming = [];
     let autores = [];
-    writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming\n');
+    writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming|SrcImgs|AltImgs|AltImgsStemming|\n');
     //Obtiene todos los titulos y subtitulos
     titulos = obtenerTitulos($);
     subtitulos = obtenerSubTitulos($);
@@ -140,10 +141,12 @@ async function inicio() {
     //obtener todo el texto de la página
     const texto = obtenerParrafos($);
     palabrasParrafoStemming = obtenerParrafosStemming(texto);
-   // console.log( $('.mw-parser-output .references').find('li').text());
-    console.log(autores);
-
-    writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}`);
+    
+    srcImgs = obtenerImagenes($,'src');
+    altImgs = obtenerImagenes($,'alt');
+    altImgsStemming = stemmingTitulosSub(altImgs);
+    writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}
+    |${altImgsStemming}`);
   
     obtenerImagenes($);
 
