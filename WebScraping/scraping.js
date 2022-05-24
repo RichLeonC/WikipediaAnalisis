@@ -84,8 +84,7 @@ function obtenerReferencias($){
 
 function obtenerLiks($){
     const links = []
-    const referencias = $('span[id = "External_links "]').closest('ul').find('li').html();
-    //     links.push($(el).attr(href))
+    const referencias = $('.mw-parser-output h2')
     // })
     // referencias.forEach((index, el) =>{
     //     links.push({
