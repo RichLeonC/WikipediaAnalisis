@@ -4,9 +4,9 @@ const fs = require('fs-extra');
 var natural = require('natural');
 const { attr } = require("cheerio/lib/api/attributes");
 const { find } = require("lodash");
+const { index } = require("cheerio/lib/api/traversing");
 const writeStream = fs.createWriteStream('wikiviky.csv'); // creacion del archivo
 var tokenizer = new natural.WordTokenizer();
-const spider = require("./spider.js");
 
 //Funcion que se encarga de obtener todos los titulos de la pagina indicada por parametro
 function obtenerTitulos($) {
@@ -84,12 +84,16 @@ function obtenerReferencias($) {
 
 function obtenerLiks($) {
     const links = []
-    const referencias = $('.mw-parser-output ').find('ul').attr('href');
-    links.forEach(el => {
-
-
-    })
-
+    const referencias = $('.mw-parser-output h2')
+    // })
+    // referencias.forEach((index, el) =>{
+    //     links.push({
+    //         text: $(el).text(), // get the text
+    //         href: $(el).attr('href'), // get the href attribute
+    //       });
+    // })
+     return referencias;
+    
 }
 
 
@@ -106,14 +110,15 @@ function obtenerAutores($) {
 
 }
 
-//Obtiene los src's o alts de las imagenes y los retorna.
-function obtenerImagenes($, filtro) {
 
+//Obtiene los src's o alts de las imagenes y los retorna.
+function obtenerImagenes($,filtro){
     let datos = []
     $('div[class="thumbinner"]').find('img').each((i, el) => {
         datos.push($(el).attr(filtro))
     })
     return datos;
+    
 }
 
 async function corredo() {
@@ -164,7 +169,6 @@ async function inicio() {
 
 
 }
-
 
 inicio();
 
