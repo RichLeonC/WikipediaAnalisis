@@ -4,6 +4,7 @@ const fs = require('fs-extra');
 var natural = require('natural');
 const { attr } = require("cheerio/lib/api/attributes");
 const { find } = require("lodash");
+const { index } = require("cheerio/lib/api/traversing");
 const writeStream = fs.createWriteStream('wikiviky.csv'); // creacion del archivo
 var tokenizer = new natural.WordTokenizer();
 
@@ -83,11 +84,16 @@ function obtenerReferencias($){
 
 function obtenerLiks($){
     const links = []
-    const referencias =  $('.mw-parser-output ').find('ul').attr('href');
-    links.forEach(el =>{
-            
-
-    })
+    const referencias = $('span[id = "External_links "]').closest('ul').find('li').html();
+    //     links.push($(el).attr(href))
+    // })
+    // referencias.forEach((index, el) =>{
+    //     links.push({
+    //         text: $(el).text(), // get the text
+    //         href: $(el).attr('href'), // get the href attribute
+    //       });
+    // })
+     return referencias;
     
 }
 
@@ -105,14 +111,15 @@ function obtenerAutores($){
    
 }
 
+
 //Obtiene los src's o alts de las imagenes y los retorna.
 function obtenerImagenes($,filtro){
-    
     let datos = []
     $('div[class="thumbinner"]').find('img').each((i,el)=>{
         datos.push($(el).attr(filtro))
     })
     return datos;
+    
 }
 
 
@@ -128,6 +135,7 @@ async function inicio() {
     let subTitulosStemming=[];
     let palabrasParrafoStemming = [];
     let autores = [];
+    let links = []
     writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming|SrcImgs|AltImgs|AltImgsStemming|\n');
     //Obtiene todos los titulos y subtitulos
     titulos = obtenerTitulos($);
@@ -138,6 +146,10 @@ async function inicio() {
     //obtener todo el texto de la página
     const texto = obtenerParrafos($);
     palabrasParrafoStemming = obtenerParrafosStemming(texto);
+
+    links = obtenerLiks($);
+    
+    console.log(links);
     
     srcImgs = obtenerImagenes($,'src');
     altImgs = obtenerImagenes($,'alt');
@@ -145,9 +157,9 @@ async function inicio() {
     writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}
     |${altImgsStemming}`);
   
+    obtenerImagenes($);
 
 }
-
 
 inicio();
 
