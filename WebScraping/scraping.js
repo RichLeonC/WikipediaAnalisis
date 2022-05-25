@@ -175,5 +175,23 @@ async function inicio() {
 
 }
 
-inicio();
+async function lecturaRapida(){
+    let objetos = [];
+    writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming|SrcImgs|AltImgs|AltImgsStemming\n');
+    let pagMadres = ['https://en.wikipedia.org/wiki/Special:AllPages?from=a&to=&namespace=0'];
+    for (let i = 0; i < pagMadres.length; i++) {
+        let paginas = await spider(pagMadres[i]);
+        for (let j = 0; j < paginas.length; j++) {
+            const $ = await request({// estas lineas de codigo son para trasformar la pagina en un objeto 
+                uri: "https://en.wikipedia.org" + paginas[j], // funcion de cheerio para escaneo de pagina web
+                transform: body => cheerio.load(body) //html que se toma de la pagina
+            }) // petición al sitio web que se le queiere hacer web scraping
+            objetos.push($);
+
+    }
+}
+        console.log(objetos);
+}
+
+lecturaRapida();
 
