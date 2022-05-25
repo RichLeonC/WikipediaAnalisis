@@ -126,7 +126,7 @@ function obtenerImagenes($, filtro) {
 }
 
 async function inicio() {
-    writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming|SrcImgs|AltImgs|AltImgsStemming\n');
+    writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming|SrcImgs|AltImgs|AltImgsStemming|Autores|Referencias\n');
     let pagMadres = ['https://en.wikipedia.org/wiki/Special:AllPages?from=a&to=&namespace=0'];
 
 
@@ -148,6 +148,7 @@ async function inicio() {
             let subTitulosStemming = [];
             let palabrasParrafoStemming = [];
             let autores = [];
+            let referencias = [];
             let srcImgs = [];
             let altImgs = [];
             let altImgsStemming = [];
@@ -158,6 +159,7 @@ async function inicio() {
             titulosStemming = obtenerTitulosStemming($);
             subTitulosStemming = obtenerSubTitulosStemming($);
             autores = obtenerAutores($);
+            referencias = obtenerReferencias($);
             //obtener todo el texto de la página
             const texto = obtenerParrafos($);
             palabrasParrafoStemming = obtenerParrafosStemming(texto);
@@ -165,7 +167,7 @@ async function inicio() {
             srcImgs = obtenerImagenes($, 'src');
             altImgs = obtenerImagenes($, 'alt');
             altImgsStemming = stemmingTitulosSub(altImgs);
-            writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}|${altImgsStemming}\n`);
+            writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}|${altImgsStemming}|${autores}|${referencias}\n`);
 
         }
     }
