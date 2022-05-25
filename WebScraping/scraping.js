@@ -92,8 +92,8 @@ function obtenerLiks($) {
     //         href: $(el).attr('href'), // get the href attribute
     //       });
     // })
-    return referencias;
-
+     return referencias;
+    
 }
 
 
@@ -112,20 +112,21 @@ function obtenerAutores($) {
 
 
 //Obtiene los src's o alts de las imagenes y los retorna.
-function obtenerImagenes($, filtro) {
+function obtenerImagenes($,filtro){
     let datos = []
-    // $('div[class="thumbinner"]').find('img').each((i, el) => {
-    //     datos.push($(el).attr(filtro))
-    // })
-    $('#content').find('img').each((i, el) => {
+    $('div[class="thumbinner"]').find('img').each((i, el) => {
         datos.push($(el).attr(filtro))
     })
     return datos;
+    
+}
+
+async function corredo() {
 
 }
 
 async function inicio() {
-    writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming|SrcImgs|AltImgs|AltImgsStemming|Autores|Referencias\n');
+    writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming|SrcImgs|AltImgs|AltImgsStemming\n');
     let pagMadres = ['https://en.wikipedia.org/wiki/Special:AllPages?from=a&to=&namespace=0'];
 
 
@@ -133,21 +134,16 @@ async function inicio() {
         let paginas = await spider(pagMadres[i]);
         for (let j = 0; j < paginas.length; j++) {
             const $ = await request({// estas lineas de codigo son para trasformar la pagina en un objeto 
-                 uri: "https://en.wikipedia.org" + paginas[j], // funcion de cheerio para escaneo de pagina web
-                transform: body => cheerio.load(body), //html que se toma de la pagina
+                uri: "https://en.wikipedia.org" + paginas[j], // funcion de cheerio para escaneo de pagina web
+                transform: body => cheerio.load(body) //html que se toma de la pagina
+            }) // petición al sitio web que se le queiere hacer web scraping
 
-            })
-            // .on('response', function(response) {
-
-            // }) // petición al sitio web que se le queiere hacer web scraping
-            
             let titulos = [];
             let titulosStemming = [];
             let subtitulos = [];
             let subTitulosStemming = [];
             let palabrasParrafoStemming = [];
             let autores = [];
-            let referencias = [];
             let srcImgs = [];
             let altImgs = [];
             let altImgsStemming = [];
@@ -158,7 +154,6 @@ async function inicio() {
             titulosStemming = obtenerTitulosStemming($);
             subTitulosStemming = obtenerSubTitulosStemming($);
             autores = obtenerAutores($);
-            referencias = obtenerReferencias($);
             //obtener todo el texto de la página
             const texto = obtenerParrafos($);
             palabrasParrafoStemming = obtenerParrafosStemming(texto);
@@ -166,7 +161,8 @@ async function inicio() {
             srcImgs = obtenerImagenes($, 'src');
             altImgs = obtenerImagenes($, 'alt');
             altImgsStemming = stemmingTitulosSub(altImgs);
-            writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}|${altImgsStemming}|${autores}|${referencias}\n`);
+            writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}
+    |${altImgsStemming}\n`);
 
         }
     }
