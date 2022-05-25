@@ -115,7 +115,10 @@ function obtenerAutores($) {
 //Obtiene los src's o alts de las imagenes y los retorna.
 function obtenerImagenes($, filtro) {
     let datos = []
-    $('div[class="thumbinner"]').find('img').each((i, el) => {
+    // $('div[class="thumbinner"]').find('img').each((i, el) => {
+    //     datos.push($(el).attr(filtro))
+    // })
+    $('#content').find('img').each((i, el) => {
         datos.push($(el).attr(filtro))
     })
     return datos;
@@ -134,9 +137,10 @@ async function inicio() {
                  uri: "https://en.wikipedia.org" + paginas[j], // funcion de cheerio para escaneo de pagina web
                 transform: body => cheerio.load(body), //html que se toma de la pagina
 
-            }).on('response', function(response) {
+            })
+            // .on('response', function(response) {
 
-            }) // petición al sitio web que se le queiere hacer web scraping
+            // }) // petición al sitio web que se le queiere hacer web scraping
             
             let titulos = [];
             let titulosStemming = [];
@@ -161,8 +165,7 @@ async function inicio() {
             srcImgs = obtenerImagenes($, 'src');
             altImgs = obtenerImagenes($, 'alt');
             altImgsStemming = stemmingTitulosSub(altImgs);
-            writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}
-    |${altImgsStemming}\n`);
+            writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}|${altImgsStemming}\n`);
 
         }
     }
