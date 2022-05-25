@@ -34,17 +34,22 @@ function obtenerSubTitulos($) {
 //Funcion que se encarga de obtener los titulos o subitulos y aplicarles stemming, de la pagina recibida por parametro
 
 function stemmingTitulosSub(array) {
-    let subTitulosStemming = [];
-    let tokenUnido = '';
-    array.forEach(subtitulo => {
-        let tokens = tokenizer.tokenize(subtitulo);
-        tokens.forEach(token => {
-            tokenUnido += natural.PorterStemmer.stem(token).concat(" ");
 
+    let subTitulosStemming = [];
+    try{
+        let tokenUnido = '';
+        array.forEach(subtitulo => {
+            let tokens = tokenizer.tokenize(subtitulo);
+            tokens.forEach(token => {
+                tokenUnido += natural.PorterStemmer.stem(token).concat(" ");
+
+            })
+            subTitulosStemming.push(tokenUnido);
+            tokenUnido = '';
         })
-        subTitulosStemming.push(tokenUnido);
-        tokenUnido = '';
-    })
+    }catch(e){
+        
+    }
     return subTitulosStemming;
 }
 
@@ -127,21 +132,25 @@ function obtenerImagenes($, filtro) {
 
 async function inicio() {
     writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming|SrcImgs|AltImgs|AltImgsStemming|Autores|Referencias\n');
-    let pagMadres = ['https://en.wikipedia.org/wiki/Special:AllPages?from=a&to=&namespace=0'];
+    let pagMadres = ['https://en.wikipedia.org/wiki/Special:AllPages?from=a&to=&namespace=0', "https://en.wikipedia.org/wiki/Special:AllPages?from=Fa&to=&namespace=0",
+        "https://en.wikipedia.org/wiki/Special:AllPages?from=gorilla&to=&namespace=0", 'https://en.wikipedia.org/wiki/Special:AllPages?from=her&to=&namespace=0', 'https://en.wikipedia.org/wiki/Special:AllPages?from=image&to=&namespace=0',
+        "https://en.wikipedia.org/wiki/Special:AllPages?from=kend&to=&namespace=0", "https://en.wikipedia.org/wiki/Special:AllPages?from=leo&to=&namespace=0", "https://en.wikipedia.org/wiki/Special:AllPages?from=mes&to=&namespace=0",
+        "https://en.wikipedia.org/wiki/Special:AllPages?from=nex&to=&namespace=0", "https://en.wikipedia.org/wiki/Special:AllPages?from=oscar&to=&namespace=0", "https://en.wikipedia.org/wiki/Special:AllPages?from=part&to=&namespace=0",
+        "https://en.wikipedia.org/wiki/Special:AllPages?from=que&to=&namespace=0", "https://en.wikipedia.org/wiki/Special:AllPages?from=scar&to=&namespace=0"];
 
-
-    for (let i = 0; i < pagMadres.length; i++) {
+    for (let i = 1; i < pagMadres.length; i++) {
         let paginas = await spider(pagMadres[i]);
+        console.log('i:'+i);
         for (let j = 0; j < paginas.length; j++) {
             const $ = await request({// estas lineas de codigo son para trasformar la pagina en un objeto 
-                 uri: "https://en.wikipedia.org" + paginas[j], // funcion de cheerio para escaneo de pagina web
+                uri: "https://en.wikipedia.org" + paginas[j], // funcion de cheerio para escaneo de pagina web
                 transform: body => cheerio.load(body), //html que se toma de la pagina
 
             })
             // .on('response', function(response) {
 
             // }) // petición al sitio web que se le queiere hacer web scraping
-            
+
             let titulos = [];
             let titulosStemming = [];
             let subtitulos = [];
@@ -175,10 +184,15 @@ async function inicio() {
 
 }
 
-async function lecturaRapida(){
+async function lecturaRapida() {
     let objetos = [];
     writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming|SrcImgs|AltImgs|AltImgsStemming\n');
-    let pagMadres = ['https://en.wikipedia.org/wiki/Special:AllPages?from=a&to=&namespace=0'];
+    let pagMadres = ['https://en.wikipedia.org/wiki/Special:AllPages?from=a&to=&namespace=0', "https://en.wikipedia.org/wiki/Special:AllPages?from=Fa&to=&namespace=0",
+        "https://en.wikipedia.org/wiki/Special:AllPages?from=gorilla&to=&namespace=0", 'https://en.wikipedia.org/wiki/Special:AllPages?from=her&to=&namespace=0', 'https://en.wikipedia.org/wiki/Special:AllPages?from=image&to=&namespace=0',
+        "https://en.wikipedia.org/wiki/Special:AllPages?from=kend&to=&namespace=0", "https://en.wikipedia.org/wiki/Special:AllPages?from=leo&to=&namespace=0", "https://en.wikipedia.org/wiki/Special:AllPages?from=mes&to=&namespace=0",
+        "https://en.wikipedia.org/wiki/Special:AllPages?from=nex&to=&namespace=0", "https://en.wikipedia.org/wiki/Special:AllPages?from=oscar&to=&namespace=0", "https://en.wikipedia.org/wiki/Special:AllPages?from=part&to=&namespace=0",
+        "https://en.wikipedia.org/wiki/Special:AllPages?from=que&to=&namespace=0", "https://en.wikipedia.org/wiki/Special:AllPages?from=scar&to=&namespace=0"];
+    console.log(pagMadres.length);
     for (let i = 0; i < pagMadres.length; i++) {
         let paginas = await spider(pagMadres[i]);
         for (let j = 0; j < paginas.length; j++) {
@@ -188,10 +202,11 @@ async function lecturaRapida(){
             }) // petición al sitio web que se le queiere hacer web scraping
             objetos.push($);
 
+        }
     }
-}
-        console.log(objetos);
+    console.log(objetos);
 }
 
-lecturaRapida();
+inicio();
+
 
