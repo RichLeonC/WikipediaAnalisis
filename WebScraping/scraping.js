@@ -8,6 +8,7 @@ const { index } = require("cheerio/lib/api/traversing");
 const writeStream = fs.createWriteStream('wikiviky.csv'); // creacion del archivo
 var tokenizer = new natural.WordTokenizer();
 const spider = require("./spider.js");
+const modulePagMadres = require("./pagMadres.js")
 
 //Funcion que se encarga de obtener todos los titulos de la pagina indicada por parametro
 function obtenerTitulos($) {
@@ -83,22 +84,16 @@ function obtenerSubTitulosStemming($) {
 }
 
 function obtenerReferencias($) {
-    const referencias = $('.mw-parser-output .reflist reflist-columns references-column-width').find('ol').text();
+    const referencias = $('.mw-parser-output .reflist' ).text();
     return referencias;
 
 }
 
 function obtenerLiks($) {
     const links = []
-    const referencias = $('.mw-parser-output h2')
-    // })
-    // referencias.forEach((index, el) =>{
-    //     links.push({
-    //         text: $(el).text(), // get the text
-    //         href: $(el).attr('href'), // get the href attribute
-    //       });
-    // })
-    return referencias;
+    $('.mw-parser-output ul li a ').each((i,el)=>links.push($(el).attr('href'))).text();
+
+     return links;
 
 }
 
@@ -132,13 +127,8 @@ function obtenerImagenes($, filtro) {
 
 async function inicio() {
     writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming|SrcImgs|AltImgs|AltImgsStemming|Autores|Referencias\n');
-    let pagMadres = ['https://en.wikipedia.org/wiki/Special:AllPages?from=a&to=&namespace=0', "https://en.wikipedia.org/wiki/Special:AllPages?from=Fa&to=&namespace=0",
-        "https://en.wikipedia.org/wiki/Special:AllPages?from=gorilla&to=&namespace=0", 'https://en.wikipedia.org/wiki/Special:AllPages?from=her&to=&namespace=0', 'https://en.wikipedia.org/wiki/Special:AllPages?from=image&to=&namespace=0',
-        "https://en.wikipedia.org/wiki/Special:AllPages?from=kend&to=&namespace=0", "https://en.wikipedia.org/wiki/Special:AllPages?from=leo&to=&namespace=0", "https://en.wikipedia.org/wiki/Special:AllPages?from=mes&to=&namespace=0",
-        "https://en.wikipedia.org/wiki/Special:AllPages?from=nex&to=&namespace=0", "https://en.wikipedia.org/wiki/Special:AllPages?from=oscar&to=&namespace=0", "https://en.wikipedia.org/wiki/Special:AllPages?from=part&to=&namespace=0",
-        "https://en.wikipedia.org/wiki/Special:AllPages?from=que&to=&namespace=0", "https://en.wikipedia.org/wiki/Special:AllPages?from=scar&to=&namespace=0"];
-
-    for (let i = 1; i < pagMadres.length; i++) {
+    let pagMadres = modulePagMadres.pagMadres;
+    for (let i = 0; i < pagMadres.length; i++) {
         let paginas = await spider(pagMadres[i]);
         console.log('i:'+i);
         for (let j = 0; j < paginas.length; j++) {
@@ -176,7 +166,7 @@ async function inicio() {
             srcImgs = obtenerImagenes($, 'src');
             altImgs = obtenerImagenes($, 'alt');
             altImgsStemming = stemmingTitulosSub(altImgs);
-            writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}|${altImgsStemming}|${autores}|${referencias}\n`);
+            writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}|${altImgsStemming}|${autores}\n`);
 
         }
     }
