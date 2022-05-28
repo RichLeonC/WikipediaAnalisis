@@ -84,8 +84,9 @@ function obtenerSubTitulosStemming($) {
 }
 
 function obtenerReferencias($) {
-    const referencias = $('.mw-parser-output .reflist' ).text();
-    return referencias;
+    const ReferenciasSe=[];
+    $('.mw-parser-output .reflist').each((i,el)=>ReferenciasSe.push($(el).text().replace(/(\r\n|\n|\r)/gm, "")))
+    return ReferenciasSe;
 
 }
 
@@ -115,9 +116,6 @@ function obtenerAutores($) {
 //Obtiene los src's o alts de las imagenes y los retorna.
 function obtenerImagenes($, filtro) {
     let datos = []
-    // $('div[class="thumbinner"]').find('img').each((i, el) => {
-    //     datos.push($(el).attr(filtro))
-    // })
     $('#content').find('img').each((i, el) => {
         datos.push($(el).attr(filtro))
     })
@@ -126,8 +124,9 @@ function obtenerImagenes($, filtro) {
 }
 
 async function inicio() {
-    writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming|SrcImgs|AltImgs|AltImgsStemming|Autores|Referencias\n');
+    writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming|SrcImgs|AltImgs|AltImgsStemming|Autores|Referencias|Links\n');
     let pagMadres = modulePagMadres.pagMadres;
+    console.log(pagMadres.length);
     for (let i = 0; i < pagMadres.length; i++) {
         let paginas = await spider(pagMadres[i]);
         console.log('i:'+i);
@@ -151,6 +150,7 @@ async function inicio() {
             let srcImgs = [];
             let altImgs = [];
             let altImgsStemming = [];
+            let links = [];
 
             //Obtiene todos los titulos y subtitulos
             titulos = obtenerTitulos($);
@@ -159,6 +159,7 @@ async function inicio() {
             subTitulosStemming = obtenerSubTitulosStemming($);
             autores = obtenerAutores($);
             referencias = obtenerReferencias($);
+            links = obtenerLiks($);
             //obtener todo el texto de la página
             const texto = obtenerParrafos($);
             palabrasParrafoStemming = obtenerParrafosStemming(texto);
@@ -166,7 +167,7 @@ async function inicio() {
             srcImgs = obtenerImagenes($, 'src');
             altImgs = obtenerImagenes($, 'alt');
             altImgsStemming = stemmingTitulosSub(altImgs);
-            writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}|${altImgsStemming}|${autores}\n`);
+            writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}|${altImgsStemming}|${autores}|${referencias}|${links}\n`);
 
         }
     }
