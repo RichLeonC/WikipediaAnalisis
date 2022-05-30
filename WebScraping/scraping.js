@@ -7,6 +7,8 @@ const { find } = require("lodash");
 const { index } = require("cheerio/lib/api/traversing");
 const writeStream = fs.createWriteStream('wikiviky.csv'); // creacion del archivo
 var tokenizer = new natural.WordTokenizer();
+const spider = require("./spider.js");
+const modulePagMadres = require("./pagMadres.js")
 
 //Funcion que se encarga de obtener todos los titulos de la pagina indicada por parametro
 function obtenerTitulos($) {
@@ -33,17 +35,22 @@ function obtenerSubTitulos($) {
 //Funcion que se encarga de obtener los titulos o subitulos y aplicarles stemming, de la pagina recibida por parametro
 
 function stemmingTitulosSub(array) {
-    let subTitulosStemming = [];
-    let tokenUnido = '';
-    array.forEach(subtitulo => {
-        let tokens = tokenizer.tokenize(subtitulo);
-        tokens.forEach(token => {
-            tokenUnido += natural.PorterStemmer.stem(token).concat(" ");
 
+    let subTitulosStemming = [];
+    try{
+        let tokenUnido = '';
+        array.forEach(subtitulo => {
+            let tokens = tokenizer.tokenize(subtitulo);
+            tokens.forEach(token => {
+                tokenUnido += natural.PorterStemmer.stem(token).concat(" ");
+
+            })
+            subTitulosStemming.push(tokenUnido);
+            tokenUnido = '';
         })
-        subTitulosStemming.push(tokenUnido);
-        tokenUnido = '';
-    })
+    }catch(e){
+        
+    }
     return subTitulosStemming;
 }
 
@@ -76,24 +83,21 @@ function obtenerSubTitulosStemming($) {
     return stemmingTitulosSub(subtitulos);
 }
 
+//función que obtiene las referencias de la página
 function obtenerReferencias($) {
-    const referencias = $('.mw-parser-output .reflist reflist-columns references-column-width').find('ol').text();
-    return referencias;
+    const ReferenciasSe=[];
+    $('.mw-parser-output .reflist').each((i,el)=>ReferenciasSe.push($(el).text().replace(/(\r\n|\n|\r)/g, "").replace('|',"")));
+    return ReferenciasSe;
 
 }
 
+//obtiene todos los links que se encuentran el página
 function obtenerLiks($) {
     const links = []
-    const referencias = $('.mw-parser-output h2')
-    // })
-    // referencias.forEach((index, el) =>{
-    //     links.push({
-    //         text: $(el).text(), // get the text
-    //         href: $(el).attr('href'), // get the href attribute
-    //       });
-    // })
-     return referencias;
-    
+    $('.mw-parser-output ul li a ').each((i,el)=>links.push($(el).attr('href'))).text();
+
+     return links;
+
 }
 
 
@@ -112,31 +116,31 @@ function obtenerAutores($) {
 
 
 //Obtiene los src's o alts de las imagenes y los retorna.
-function obtenerImagenes($,filtro){
+function obtenerImagenes($, filtro) {
     let datos = []
-    $('div[class="thumbinner"]').find('img').each((i, el) => {
+    $('#content').find('img').each((i, el) => {
         datos.push($(el).attr(filtro))
     })
     return datos;
-    
-}
-
-async function corredo() {
 
 }
 
 async function inicio() {
-    writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming|SrcImgs|AltImgs|AltImgsStemming\n');
-    let pagMadres = ['https://en.wikipedia.org/wiki/Special:AllPages?from=a&to=&namespace=0'];
-
-
+    writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming|SrcImgs|AltImgs|AltImgsStemming|Autores|Referencias|Links\n');
+    let pagMadres = modulePagMadres.pagMadres;
+    console.log(pagMadres.length);
     for (let i = 0; i < pagMadres.length; i++) {
+        console.log("pag: "+i)
         let paginas = await spider(pagMadres[i]);
         for (let j = 0; j < paginas.length; j++) {
             const $ = await request({// estas lineas de codigo son para trasformar la pagina en un objeto 
                 uri: "https://en.wikipedia.org" + paginas[j], // funcion de cheerio para escaneo de pagina web
-                transform: body => cheerio.load(body) //html que se toma de la pagina
-            }) // petición al sitio web que se le queiere hacer web scraping
+                transform: body => cheerio.load(body), //html que se toma de la pagina
+
+            })
+            // .on('response', function(response) {
+
+            // }) // petición al sitio web que se le queiere hacer web scraping
 
             let titulos = [];
             let titulosStemming = [];
@@ -144,9 +148,11 @@ async function inicio() {
             let subTitulosStemming = [];
             let palabrasParrafoStemming = [];
             let autores = [];
+            let referencias = [];
             let srcImgs = [];
             let altImgs = [];
             let altImgsStemming = [];
+            let links = [];
 
             //Obtiene todos los titulos y subtitulos
             titulos = obtenerTitulos($);
@@ -154,6 +160,8 @@ async function inicio() {
             titulosStemming = obtenerTitulosStemming($);
             subTitulosStemming = obtenerSubTitulosStemming($);
             autores = obtenerAutores($);
+            referencias = obtenerReferencias($);
+            links = obtenerLiks($);
             //obtener todo el texto de la página
             const texto = obtenerParrafos($);
             palabrasParrafoStemming = obtenerParrafosStemming(texto);
@@ -161,8 +169,7 @@ async function inicio() {
             srcImgs = obtenerImagenes($, 'src');
             altImgs = obtenerImagenes($, 'alt');
             altImgsStemming = stemmingTitulosSub(altImgs);
-            writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}
-    |${altImgsStemming}\n`);
+            writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}|${altImgsStemming}|${autores}|${referencias}|${links}\n`);
 
         }
     }
@@ -170,5 +177,7 @@ async function inicio() {
 
 }
 
+
 inicio();
+
 
