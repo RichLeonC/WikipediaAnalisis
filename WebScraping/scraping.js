@@ -129,7 +129,6 @@ async function inicio() {
     console.log(pagMadres.length);
     for (let i = 0; i < pagMadres.length; i++) {
         let paginas = await spider(pagMadres[i]);
-        console.log('i:'+i);
         for (let j = 0; j < paginas.length; j++) {
             const $ = await request({// estas lineas de codigo son para trasformar la pagina en un objeto 
                 uri: "https://en.wikipedia.org" + paginas[j], // funcion de cheerio para escaneo de pagina web
