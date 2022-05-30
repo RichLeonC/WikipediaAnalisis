@@ -1,9 +1,9 @@
 var mysql = require('mysql');
 var conexion= mysql.createConnection({
     host : 'localhost',
-    database : 'AnalisisDB',
+    database : 'analisisdb',
     user : 'root',
-    password : 'cmp250230',
+    password : 'password',
 });
 
 conexion.connect(function(err) {
