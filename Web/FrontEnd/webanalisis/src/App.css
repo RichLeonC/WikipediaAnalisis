@@ -1,38 +1,67 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.inicio-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  background-image: linear-gradient(144deg,#060509ce, #372346c5 60%, #5d3b6ecb);
+  position: relative;
+  padding: 16px;
+  left: 59rem;
+  top: 14rem;
+  width: 400px;
+  height: 550px;
+  border-radius: 10px;
+
 }
 
-.App-link {
-  color: #61dafb;
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.685);
+  position: relative;
+  padding: 16px;
+  left: 32rem;
+  top: -22.4rem;
+  width: 400px;
+  height: 550px;
+  border-radius: 10px;
+
+}
+.fondo{
+width: 100vw;
+height: 50vw;
+background-image: linear-gradient(144deg,#03045E, #023E8A 60%,#0077B6);
+display: flex;
+align-items: center;
+justify-content: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.buton-container{
+  
+  align-items: center;
+  background-image: linear-gradient(144deg,#8c4a9cce,  #a267aed3 50%, #5a455fd5);
+  border: 0;
+  border-radius: 20px;
+  box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  display: flex;
+  font-family: Phantomsans, sans-serif;
+  font-size: 15px;
+  justify-content: center;
+  line-height: 1em;
+  max-width: 95%;
+  min-width: 130px;
+  padding: 17px 20px;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  cursor: pointer;
+
+
+
 }
