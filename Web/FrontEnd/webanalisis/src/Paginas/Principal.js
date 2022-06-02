@@ -1,7 +1,7 @@
 import React from 'react';
-import './App.css';
-import Label from '../src/componentes/labels/label';
-import Title from '../src/componentes/Title/Title';
+import './Principal.css';
+import Label from '../componentes/labels/label';
+import Title from '../componentes/Title/Title';
 
 function App() {
   return (
