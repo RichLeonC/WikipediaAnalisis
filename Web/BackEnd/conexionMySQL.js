@@ -1,15 +1,20 @@
 var mysql = require('mysql');
 var conexion= mysql.createConnection({
     host : 'localhost',
-    database : 'analisisdb',
+    database : 'AnalisisDB',
     user : 'root',
-    password : 'password',
+    password : '534444',
 });
 
-conexion.connect(function(err) {
-    if (err) {
-        console.error('Error de conexion: ' + err.stack);
-        return;
+conexion.connect(error=>{
+    if(error){
+        console.log('No se pudo realizar la conexion')
+        throw error;
+
+    }else{
+        console.log('Conexion Exitosa');
     }
-    console.log('Conectado con el identificador ' + conexion.threadId);
-});
+
+})
+
+module.exports = conexion;
