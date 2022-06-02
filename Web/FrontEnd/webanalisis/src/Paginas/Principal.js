@@ -10,6 +10,10 @@ function App() {
 
   function Navegar (){
     navigate('/Estadistica');
+  }
+
+  function NavegarB (){
+    navigate('/Buscador');
 
   }
 
@@ -22,7 +26,7 @@ function App() {
           <br></br>
           <Label text = 'Buscador'/>
           <br></br>
-          <button className="buton-container" >
+          <button className="buton-container" onClick={NavegarB}>
                 Entrar
             </button>
           <br></br>
