@@ -17,7 +17,7 @@ export default function RoutesP() {
           
                 <Route  path="/" element={<Home/>}/>
                 <Route  path="/Estadistica" element ={<Estadistica/>}/>
-                <Route  path="/Buscador" element={<Buscador></Buscador>}/>
+                <Route  path="/Buscador" element ={<Buscador/>}/>
         
                 
             </Routes>
