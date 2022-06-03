@@ -39,7 +39,7 @@ align-items: center;
 justify-content: center;
 }
 
-.buton-container{
+.boton-container{
   
   align-items: center;
   background-image: linear-gradient(144deg,#8c4a9cce,  #a267aed3 50%, #5a455fd5);
@@ -62,7 +62,6 @@ justify-content: center;
   touch-action: manipulation;
   white-space: nowrap;
   cursor: pointer;
-
-
+ 
 
 }
