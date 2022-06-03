@@ -6,8 +6,8 @@
   background-image: linear-gradient(144deg,#060509ce, #372346c5 60%, #5d3b6ecb);
   position: relative;
   padding: 16px;
-  left: 59rem;
-  top: 14rem;
+  left: 57rem;
+  top: 12rem;
   width: 400px;
   height: 550px;
   border-radius: 10px;
@@ -29,6 +29,7 @@
   border-radius: 10px;
 
 }
+
 .fondo{
 width: 100vw;
 height: 50vw;
