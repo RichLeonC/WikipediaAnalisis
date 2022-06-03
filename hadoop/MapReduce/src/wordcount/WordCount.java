@@ -1,7 +1,6 @@
 package wordcount;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 // Para que reconozca estos imports hay que referenciarlos en el visual studio
@@ -27,18 +26,34 @@ public class WordCount {
         // context es el output que pasa el map al reduce
         public void map(LongWritable key, Text value, Context context)
                 throws IOException, InterruptedException {
-
-            String line = value.toString();
-
-            String celdaUno = line.substring(0, line.indexOf("|"));
-            StringTokenizer titulos = new StringTokenizer(celdaUno, ",");
             
-            while(titulos.hasMoreTokens()) {
+            // transformar el input a string
+            String line = value.toString();
+            int finTitulos = line.indexOf("|");
+            
+            //Titulos        
+            String celdaTitulos = line.substring(0, finTitulos); // captura de solo titulos
+            StringTokenizer titulos = new StringTokenizer(celdaTitulos, ","); // separador de titulos
+                    
+            while(titulos.hasMoreTokens()) {    // conteo de titulos
                 value.set(titulos.nextToken());
                 context.write(value, new IntWritable(1));
-            }
+            }//hasta aquí solo agarra titulos
+/*          
+            //Subtitulos
+            int inicioSubtitulos = line.indexOf(finTitulos);
+            String textoSinTitulos = line.substring(inicioSubtitulos);
             
-
+            int finSubtitulos = textoSinTitulos.indexOf("|");
+            String celdaSubtitulos = textoSinTitulos.substring(0, finSubtitulos);
+            
+            StringTokenizer subtitulos = new StringTokenizer(celdaSubtitulos, ",");
+            
+            while(subtitulos.hasMoreTokens()) { // conteo de subtitulos
+                value.set(subtitulos.nextToken());
+                context.write(value, new IntWritable(1));
+            }
+*/
         }
     }
 
@@ -101,3 +116,4 @@ public class WordCount {
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
 }
+
