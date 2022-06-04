@@ -8,9 +8,6 @@ import { useNavigate } from 'react-router-dom';
 function App() {
   const navigate = useNavigate();
 
-  function Navegar (){
-    navigate('/Estadistica');
-  }
 
   function NavegarB (){
     navigate('/Buscador');
@@ -26,15 +23,10 @@ function App() {
           <br></br>
           <Label text = 'Buscador'/>
           <br></br>
-          <button className="buton-container" onClick={NavegarB}>
+          <button className="boton-container" onClick={NavegarB}>
                 Entrar
             </button>
           <br></br>
-          <Label text = 'Estadísticas Generales'/>
-          <br></br>
-          <button className="buton-container" onClick={Navegar}>
-                Ver
-            </button>
        </div>
        <div className="welcome-container">
        <Title text = 'Bienvenidos' />
