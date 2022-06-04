@@ -29,7 +29,7 @@ insert into Pagina values(2,'pag1','hello4',5);
  
 select * from Pagina where palabra = 'empir' || palabra = 'english' group by numeroPagina,nombrePagina; 
 select * from Pagina;
-
+delete from  Pagina;
 select sum(Pagina.cantidadRe) as cantidad from Pagina where Pagina.numeroPagina = 1;
 select max(Pagina.cantidadRe) as MasVeces from Pagina where Pagina.numeroPagina = 1;
 

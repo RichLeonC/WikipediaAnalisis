@@ -5,9 +5,9 @@ const csv = require('csv-parser');
 const fs = require('fs');
 
 const insertar=(titulo,num,palabra)=>{
-    const query = `insert into Pagina values(?,?,?)`;
-    
-    mySqlConexion.query(query,[num,titulo,palabra],(error,rows,fields)=>{
+    const query = `insert into Pagina values(?,?,?,?)`;
+    random = Math.random()*25;
+    mySqlConexion.query(query,[num,titulo,palabra,random],(error,rows,fields)=>{
        // console.log(titulo,num,palabra);
         if(!error){
             status:'Palabra agregada'
@@ -22,6 +22,9 @@ let array = [];
 let titulo = [];
 let num = 1;
 let sinDuplicados = [];
+let random = 0;
+
+
 
 fs.createReadStream('./wikiviky.csv')
   .pipe(csv())
@@ -33,9 +36,11 @@ fs.createReadStream('./wikiviky.csv')
     sinDuplicados = array.filter((item,index)=>{
         return array.indexOf(item) === index;
     })
-    sinDuplicados.forEach(e=>insertar(titulo[0],num,e));
+    
+    sinDuplicados.forEach(e=>insertar(titulo[0],num,e,random));
     num++;
-    console.log(process.memoryUsage());
+    random = 0;
+    
     array = [];
     titulo = [];
   })
