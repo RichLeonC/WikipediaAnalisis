@@ -2,7 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const mysql= require("./conexionMySQL");
 const app = express();
-//const paginaRoute = require("./routes/paginas.js");
+const paginaRoute = require("./routes/paginas");
 
 //Settings
 app.set('port',process.env.PORT || 3001);//Setea una variable port, el cual es la que nos puede proveer un SO, caso contrario puerto 3001
