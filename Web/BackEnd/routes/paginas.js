@@ -39,8 +39,9 @@ router.get('/:palabras/:1', (req, res) => { //req es request
                 filas.forEach(row => {
                     jsons = jsons.concat(row);
                 })
-               res.set('rows',jsons);
-                console.log(res.get('rows'));
+               //res.set('rows',jsons);
+                //console.log(res.get('rows'));
+                res.json(jsons);
                
             } else {
                 console.log(error);
