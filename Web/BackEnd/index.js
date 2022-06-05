@@ -1,6 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
-const mysql= require("../conexionMySQL");
+const mysqlConexion= require("./conexionMySQL.js");
 const app = express();
 const paginaRoute = require("./routes/paginas.js");
 
@@ -18,6 +18,6 @@ app.use("/paginas",paginaRoute);
 //Starting the server 
 app.listen(app.get('port'),()=>{ //Va abrir el server en el puerto 3001
     console.log('Server on port',app.get('port'));
-    console.log(mysql);
+
 })
 
