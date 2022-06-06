@@ -6,16 +6,21 @@ export default function Buscador() {
   const baseUrl = "http://localhost:3001/paginas";
   const [data, setData] = useState([]);
   const [paginas, setPaginas] = useState([]);
-  const searcher = async (e) => {
+  const Searcher = async (e) => {
     const palabra = e.target.value;
     setData(palabra);
-   
-    peticionGet();
+    // if(data.length>0)
+    // peticionGet();
   }
+
+  useEffect(() => {
+    if(data.length>0)
+   peticionGet();
+  }, [data]);
 
   const peticionGet = async () => { //Realiza peticiones Get al backend
     console.log(data);
-    await axios.get(baseUrl + "/" + data + "/1")
+    await axios.get(baseUrl + "/" + data+ "/1")
       .then(response => {
         setPaginas(response.data);
       }).catch(error => {
@@ -23,17 +28,18 @@ export default function Buscador() {
       })
   }
 
+
   return (
     <div className='fondo' style={{ backgroundImage: 'url(https://wallpaper.dog/large/11007600.jpg)', height: "1000px", weight: "2000px", backgroundRepeat: "no-repeat" }}>
       <div className='container col-sm-3' style={{ position: "relative", bottom: "19rem" }}>
         <h1>Buscá tu palabra favorita</h1>
         <input className="form-control" placeholder='palabra...'
           style={{ width: "25rem", height: "3rem", fontSize: '25px', marginTop: "2rem" }}
-          onChange={searcher}></input>
+          onChange={Searcher}></input>
         <br></br>
         <button className="buton-container" > Estadistica </button>
-
-        <table className="table table-hover mt-5 offset-md-3" style={{color:"white"}}>
+      </div>
+        <table className="table table-striped table-dark mt-2 offset-md-3 col-sm-10" style={{ color: "white", position:'absolute',right:'10rem', top:"21rem"}}>
           <thead>
             <tr>
               <th>Número</th>
@@ -51,11 +57,12 @@ export default function Buscador() {
                   <td>{pagina.palabra}</td>
                   <td>{pagina.cantidadRe}</td>
                 </tr>
-              ))}
+              ))
+            }
 
           </tbody>
         </table>
-      </div>
+
     </div>
   )
 }
