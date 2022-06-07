@@ -3,7 +3,7 @@ const request = require("request-promise"); // incluir respuestas
 const fs = require('fs-extra');
 var natural = require('natural');
 const { attr } = require("cheerio/lib/api/attributes");
-const { find } = require("lodash");
+const { find, random } = require("lodash");
 const { index } = require("cheerio/lib/api/traversing");
 const writeStream = fs.createWriteStream('wikiviky.csv'); // creacion del archivo
 var tokenizer = new natural.WordTokenizer();
@@ -126,9 +126,10 @@ function obtenerImagenes($, filtro) {
 
 }
 
-const insertar = (titulo, num, palabra, repetidas) => {
+const insertar = (titulo, num, palabra) => {
     const query = `insert into Pagina values(?,?,?,?)`;
-    mySqlConexion.query(query, [num, titulo, palabra, 1], (error, rows, fields) => {
+    let random = Math.random()*20;
+    mySqlConexion.query(query, [num, titulo, palabra, random], (error, rows, fields) => {
         // console.log(titulo,num,palabra);
         if (!error) {
             status: 'Palabra agregada'
@@ -186,7 +187,7 @@ async function inicio() {
             altImgs = obtenerImagenes($, 'alt');
             altImgsStemming = stemmingTitulosSub(altImgs);
 
-            // //Para llenar el SQL 
+            //Para llenar el SQL 
             // sinDuplicados = palabrasParrafoStemming.filter((item,index)=>{
             //     return palabrasParrafoStemming.indexOf(item) === index;
             // })
