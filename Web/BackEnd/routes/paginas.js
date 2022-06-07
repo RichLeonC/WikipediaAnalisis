@@ -15,10 +15,9 @@ router.get('/', (req, res) => { //req es request
     });
 });
 
+
 router.get('/:pagina', (req, res) => {
     const { pagina } = req.params;; //Quiero el correo que proviene como parametro en la url
-
-
     mySqlConexion.query('select sum(Pagina.cantidadRe) as cantidad from Pagina where Pagina.numeroPagina = ?',[pagina],
     (error,rows,fields)=>{
         if(!error){
@@ -29,10 +28,10 @@ router.get('/:pagina', (req, res) => {
     });
 });
     
-router.get('/:palabras',(req,res)=>{ //req es request
-    let {palabras} = req.params;
+router.get('/:Estadisticas',(req,res)=>{ //req es request
     
-    mySqlConexion.query('select * from Usuario',(error,rows,fields)=>{
+    
+    mySqlConexion.query('select * from EstadisticaGeneral',(error,rows,fields)=>{
         if(!error){
             res.json(rows);
         }else{
