@@ -13,6 +13,9 @@ function App() {
     navigate('/Buscador');
 
   }
+  function Navegar(){
+    navigate('/Estadistica');
+  }
 
 
   return (
@@ -27,6 +30,12 @@ function App() {
                 Entrar
             </button>
           <br></br>
+          <Label text = 'Estadisticas'/>
+          <br></br>
+          <button className="boton-container" onClick={Navegar}>
+                Ver
+            </button>
+
        </div>
        <div className="welcome-container">
        <Title text = 'Bienvenidos' />

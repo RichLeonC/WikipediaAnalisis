@@ -2,13 +2,10 @@ const express = require('express');
 const router = express.Router();
 const mySqlConexion = require("../conexionMySQL");
 
-router.get('/',(req,res)=>{ //req es request
-    mySqlConexion.query('select * from Pagina',(error,rows,fields)=>{
-        if(!error){
-const mysqlConexion = require("../conexionMySQL");
-const natural = require('natural')
+
+
 router.get('/', (req, res) => { //req es request
-    mysqlConexion.query('select * from Pagina', (error, rows, fields) => {
+    mySqlConexion.query('select * from Pagina', (error, rows, fields) => {
         if (!error) {
             res.json(rows);
         } else {
@@ -29,8 +26,8 @@ router.get('/:pagina', (req, res) => {
             console.log(error);
         }
     });
-})
-    |
+});
+    
 router.get('/:palabras',(req,res)=>{ //req es request
     let {palabras} = req.params;
     
@@ -43,15 +40,8 @@ router.get('/:palabras',(req,res)=>{ //req es request
     });
 });
 
-    mysqlConexion.query('select sum(Pagina.cantidadRe) as cantidad from Pagina where Pagina.numeroPagina = ?', [pagina],
-        (error, rows, fields) => {
-            if (!error) {
-                res.json(rows[0]);
-            } else {
-                console.log(error);
-            }
-        });
-})
+
+
 
 router.get('/:palabras/:1', (req, res) => { //req es request
     let { palabras } = req.params;
