@@ -9,6 +9,7 @@ const writeStream = fs.createWriteStream('wikiviky.csv'); // creacion del archiv
 var tokenizer = new natural.WordTokenizer();
 const spider = require("./spider.js");
 const modulePagMadres = require("./pagMadres.js")
+const mySqlConexion = require('./conexionMySQL.js')
 
 //Funcion que se encarga de obtener todos los titulos de la pagina indicada por parametro
 function obtenerTitulos($) {
@@ -125,9 +126,24 @@ function obtenerImagenes($, filtro) {
 
 }
 
+const insertar=(titulo,num,palabra,repetidas)=>{
+    const query = `insert into Pagina values(?,?,?,?)`;
+    mySqlConexion.query(query,[num,titulo,palabra,1],(error,rows,fields)=>{
+       // console.log(titulo,num,palabra);
+        if(!error){
+            status:'Palabra agregada'
+        }
+        else{
+            console.log(error);
+            return false;
+        }
+    })
+}
+
 async function inicio() {
     writeStream.write('Titulos|Subtitulos|Parrafos|ParrafosStemming|TitulosStemming|SubTitulosStemming|SrcImgs|AltImgs|AltImgsStemming|Autores|Referencias|Links\n');
     let pagMadres = modulePagMadres.pagMadres;
+    let numPagina = 1;
     console.log(pagMadres.length);
     for (let i = 0; i < pagMadres.length; i++) {
         console.log("pag:"+i);
@@ -156,20 +172,31 @@ async function inicio() {
 
             //Obtiene todos los titulos y subtitulos
             titulos = obtenerTitulos($);
-            subtitulos = obtenerSubTitulos($);
-            titulosStemming = obtenerTitulosStemming($);
-            subTitulosStemming = obtenerSubTitulosStemming($);
-            autores = obtenerAutores($);
-            referencias = obtenerReferencias($);
-            links = obtenerLiks($);
+           // subtitulos = obtenerSubTitulos($);
+            //titulosStemming = obtenerTitulosStemming($);
+           // subTitulosStemming = obtenerSubTitulosStemming($);
+           // autores = obtenerAutores($);
+           // referencias = obtenerReferencias($);
+           // links = obtenerLiks($);
             //obtener todo el texto de la página
             const texto = obtenerParrafos($);
             palabrasParrafoStemming = obtenerParrafosStemming(texto);
 
-            srcImgs = obtenerImagenes($, 'src');
-            altImgs = obtenerImagenes($, 'alt');
-            altImgsStemming = stemmingTitulosSub(altImgs);
-            writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}|${altImgsStemming}|${autores}|${referencias}|${links}\n`);
+            //srcImgs = obtenerImagenes($, 'src');
+            //altImgs = obtenerImagenes($, 'alt');
+            //altImgsStemming = stemmingTitulosSub(altImgs);
+            
+            //Para llenar el SQL 
+            sinDuplicados = palabrasParrafoStemming.filter((item,index)=>{
+                return palabrasParrafoStemming.indexOf(item) === index;
+            })
+
+            sinDuplicados.forEach(palabra=>{
+                insertar(titulos[0],numPagina,palabra,1);
+            })
+            
+            numPagina++;
+           // writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}|${altImgsStemming}|${autores}|${referencias}|${links}\n`);
 
         }
     }
