@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mySqlConexion = require("../conexionMySQL");
+const natural = require('natural');
 
 
 
@@ -51,7 +52,7 @@ router.get('/:palabras/:1', (req, res) => { //req es request
     try {
         arrayP.forEach(p=>palabrasStemming.push(natural.PorterStemmer.stem(p)));
 
-        mysqlConexion.query('select * from Pagina where palabra = ? or palabra = ? or palabra = ?', 
+        mySqlConexion.query('select * from Pagina where palabra = ? or palabra = ? or palabra = ?', 
         [palabrasStemming[0],palabrasStemming[1],palabrasStemming[2]], (error, rows, fields) => {
             if (!error) {
                 res.json(rows);
