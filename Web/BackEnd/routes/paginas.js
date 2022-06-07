@@ -48,7 +48,6 @@ router.get('/:palabras/:1', (req, res) => { //req es request
     let { palabras } = req.params;
     let arrayP = palabras.split(" ");
     let palabrasStemming = [];
-    let jsons = [];
     try {
         arrayP.forEach(p=>palabrasStemming.push(natural.PorterStemmer.stem(p)));
 
