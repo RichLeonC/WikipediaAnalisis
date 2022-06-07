@@ -9,18 +9,18 @@ Chart.register(ArcElement);
 
 
 function Estadísticas(){
-    const baseUrl = "http://localhost:3001/Estadisticas";
+    const baseUrl = "http://localhost:3001/paginas/2";
     const [data, setData] = useState([]);
+    
+ 
 
-    // useEffect(() => {
-    //    peticionGet();
-    // })
 
 
     const peticionGet = async () => { //Realiza peticiones Get al backend
         await axios.get(baseUrl)
           .then(response => {
             setData(response.data);
+            console.log(data);
           }).catch(error => {
             console.log(error);
           })
@@ -28,13 +28,17 @@ function Estadísticas(){
 
 
     
+      useEffect(() => {
+        if(data.length>0)
+       peticionGet();
+      }, [data]);
           
     const dataE={
         labels: ['CantidadTitulos', 'CantidadSubtitulos', 'CantidadPalabras'],
       
         datasets:[{
             backgroundColor: ['#6C63FF', '#5757AF', '#8F8FC3'],
-            data: ['456','234','23423'],
+            data: ['456','234','2323'],
             weight: 1
 
         }]
