@@ -16,22 +16,22 @@ function Estadísticas(){
 
 
 
-    const peticionGet = async () => { //Realiza peticiones Get al backend
+    const peticionGet = async()=>{ //Realiza peticiones Get al backend Periodos
         await axios.get(baseUrl)
-          .then(response => {
+        .then(response=>{
             setData(response.data);
             console.log(data);
-          }).catch(error => {
+        }).catch(error=>{
             console.log(error);
-          })
-      }
+        })
+    }
 
 
     
-      useEffect(() => {
-        if(data.length>0)
-       peticionGet();
-      }, [data]);
+      useEffect(() => { //Hace efecto la peticion
+        
+        peticionGet();
+     }, [])
           
     const dataE={
         labels: ['CantidadTitulos', 'CantidadSubtitulos', 'CantidadPalabras'],
@@ -52,6 +52,7 @@ function Estadísticas(){
         
     }
 
+    console.log(data);
     return(
         <div className="Estadistica"  style={{backgroundImage: 'url(https://wallpaper.dog/large/11007600.jpg)', height: "1000px", weight: "2000px", backgroundRepeat: "no-repeat"}}>
          <br></br>
