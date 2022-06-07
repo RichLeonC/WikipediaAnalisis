@@ -38,7 +38,7 @@ function obtenerSubTitulos($) {
 function stemmingTitulosSub(array) {
 
     let subTitulosStemming = [];
-    try{
+    try {
         let tokenUnido = '';
         array.forEach(subtitulo => {
             let tokens = tokenizer.tokenize(subtitulo);
@@ -49,8 +49,8 @@ function stemmingTitulosSub(array) {
             subTitulosStemming.push(tokenUnido);
             tokenUnido = '';
         })
-    }catch(e){
-        
+    } catch (e) {
+
     }
     return subTitulosStemming;
 }
@@ -86,8 +86,8 @@ function obtenerSubTitulosStemming($) {
 
 //función que obtiene las referencias de la página
 function obtenerReferencias($) {
-    const ReferenciasSe=[];
-    $('.mw-parser-output .reflist').each((i,el)=>ReferenciasSe.push($(el).text().replace(/(\r\n|\n|\r)/g, "").replace('|',"")));
+    const ReferenciasSe = [];
+    $('.mw-parser-output .reflist').each((i, el) => ReferenciasSe.push($(el).text().replace(/(\r\n|\n|\r)/g, "").replace('|', "")));
     return ReferenciasSe;
 
 }
@@ -95,9 +95,9 @@ function obtenerReferencias($) {
 //obtiene todos los links que se encuentran el página
 function obtenerLiks($) {
     const links = []
-    $('.mw-parser-output ul li a ').each((i,el)=>links.push($(el).attr('href'))).text();
+    $('.mw-parser-output ul li a ').each((i, el) => links.push($(el).attr('href'))).text();
 
-     return links;
+    return links;
 
 }
 
@@ -126,14 +126,14 @@ function obtenerImagenes($, filtro) {
 
 }
 
-const insertar=(titulo,num,palabra,repetidas)=>{
+const insertar = (titulo, num, palabra, repetidas) => {
     const query = `insert into Pagina values(?,?,?,?)`;
-    mySqlConexion.query(query,[num,titulo,palabra,1],(error,rows,fields)=>{
-       // console.log(titulo,num,palabra);
-        if(!error){
-            status:'Palabra agregada'
+    mySqlConexion.query(query, [num, titulo, palabra, 1], (error, rows, fields) => {
+        // console.log(titulo,num,palabra);
+        if (!error) {
+            status: 'Palabra agregada'
         }
-        else{
+        else {
             console.log(error);
             return false;
         }
@@ -146,7 +146,7 @@ async function inicio() {
     let numPagina = 1;
     console.log(pagMadres.length);
     for (let i = 0; i < pagMadres.length; i++) {
-        console.log("pag:"+i);
+        console.log("pag:" + i);
         let paginas = await spider(pagMadres[i]);
         for (let j = 0; j < paginas.length; j++) {
             const $ = await request({// estas lineas de codigo son para trasformar la pagina en un objeto 
@@ -172,31 +172,41 @@ async function inicio() {
 
             //Obtiene todos los titulos y subtitulos
             titulos = obtenerTitulos($);
-           // subtitulos = obtenerSubTitulos($);
-            //titulosStemming = obtenerTitulosStemming($);
-           // subTitulosStemming = obtenerSubTitulosStemming($);
-           // autores = obtenerAutores($);
-           // referencias = obtenerReferencias($);
-           // links = obtenerLiks($);
+            subtitulos = obtenerSubTitulos($);
+            titulosStemming = obtenerTitulosStemming($);
+            subTitulosStemming = obtenerSubTitulosStemming($);
+            autores = obtenerAutores($);
+            referencias = obtenerReferencias($);
+            links = obtenerLiks($);
             //obtener todo el texto de la página
             const texto = obtenerParrafos($);
             palabrasParrafoStemming = obtenerParrafosStemming(texto);
 
-            //srcImgs = obtenerImagenes($, 'src');
-            //altImgs = obtenerImagenes($, 'alt');
-            //altImgsStemming = stemmingTitulosSub(altImgs);
-            
-            //Para llenar el SQL 
-            sinDuplicados = palabrasParrafoStemming.filter((item,index)=>{
-                return palabrasParrafoStemming.indexOf(item) === index;
-            })
+            srcImgs = obtenerImagenes($, 'src');
+            altImgs = obtenerImagenes($, 'alt');
+            altImgsStemming = stemmingTitulosSub(altImgs);
 
-            sinDuplicados.forEach(palabra=>{
-                insertar(titulos[0],numPagina,palabra,1);
-            })
-            
-            numPagina++;
-           // writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}|${altImgsStemming}|${autores}|${referencias}|${links}\n`);
+            // //Para llenar el SQL 
+            // sinDuplicados = palabrasParrafoStemming.filter((item,index)=>{
+            //     return palabrasParrafoStemming.indexOf(item) === index;
+            // })
+            // let repetidas = 0;
+            // for (const p in palabrasParrafoStemming) {
+            //     if(sinDuplicados.includes(palabrasParrafoStemming[p])){
+            //         repetidas++;
+            //     }
+            //     else{
+            //         insertar(titulos[0],numPagina,palabrasParrafoStemming[p],repetidas);
+
+            //     }
+            // }
+
+            // sinDuplicados.forEach(palabra=>{
+            //     insertar(titulos[0],numPagina,palabra,1);
+            // })
+
+            // numPagina++;
+            writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}|${altImgsStemming}|${autores}|${referencias}|${links}\n`);
 
         }
     }
