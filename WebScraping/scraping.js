@@ -3,7 +3,7 @@ const request = require("request-promise"); // incluir respuestas
 const fs = require('fs-extra');
 var natural = require('natural');
 const { attr } = require("cheerio/lib/api/attributes");
-const { find } = require("lodash");
+const { find, random } = require("lodash");
 const { index } = require("cheerio/lib/api/traversing");
 const writeStream = fs.createWriteStream('wikiviky.csv'); // creacion del archivo
 var tokenizer = new natural.WordTokenizer();
@@ -126,9 +126,10 @@ function obtenerImagenes($, filtro) {
 
 }
 
-const insertar = (titulo, num, palabra, repetidas) => {
+const insertar = (titulo, num, palabra) => {
     const query = `insert into Pagina values(?,?,?,?)`;
-    mySqlConexion.query(query, [num, titulo, palabra, 1], (error, rows, fields) => {
+    let random = Math.random()*20;
+    mySqlConexion.query(query, [num, titulo, palabra, random], (error, rows, fields) => {
         // console.log(titulo,num,palabra);
         if (!error) {
             status: 'Palabra agregada'
@@ -172,41 +173,41 @@ async function inicio() {
 
             //Obtiene todos los titulos y subtitulos
             titulos = obtenerTitulos($);
-            subtitulos = obtenerSubTitulos($);
-            titulosStemming = obtenerTitulosStemming($);
-            subTitulosStemming = obtenerSubTitulosStemming($);
-            autores = obtenerAutores($);
-            referencias = obtenerReferencias($);
-            links = obtenerLiks($);
+            // subtitulos = obtenerSubTitulos($);
+            // titulosStemming = obtenerTitulosStemming($);
+            // subTitulosStemming = obtenerSubTitulosStemming($);
+            // autores = obtenerAutores($);
+            // referencias = obtenerReferencias($);
+            // links = obtenerLiks($);
             //obtener todo el texto de la página
             const texto = obtenerParrafos($);
             palabrasParrafoStemming = obtenerParrafosStemming(texto);
 
-            srcImgs = obtenerImagenes($, 'src');
-            altImgs = obtenerImagenes($, 'alt');
-            altImgsStemming = stemmingTitulosSub(altImgs);
+            // srcImgs = obtenerImagenes($, 'src');
+            // altImgs = obtenerImagenes($, 'alt');
+            // altImgsStemming = stemmingTitulosSub(altImgs);
 
-            // //Para llenar el SQL 
-            // sinDuplicados = palabrasParrafoStemming.filter((item,index)=>{
-            //     return palabrasParrafoStemming.indexOf(item) === index;
-            // })
-            // let repetidas = 0;
-            // for (const p in palabrasParrafoStemming) {
-            //     if(sinDuplicados.includes(palabrasParrafoStemming[p])){
-            //         repetidas++;
-            //     }
-            //     else{
-            //         insertar(titulos[0],numPagina,palabrasParrafoStemming[p],repetidas);
+            //Para llenar el SQL 
+            sinDuplicados = palabrasParrafoStemming.filter((item,index)=>{
+                return palabrasParrafoStemming.indexOf(item) === index;
+            })
+            let repetidas = 0;
+            for (const p in palabrasParrafoStemming) {
+                if(sinDuplicados.includes(palabrasParrafoStemming[p])){
+                    repetidas++;
+                }
+                else{
+                    insertar(titulos[0],numPagina,palabrasParrafoStemming[p],repetidas);
 
-            //     }
-            // }
+                }
+            }
 
-            // sinDuplicados.forEach(palabra=>{
-            //     insertar(titulos[0],numPagina,palabra,1);
-            // })
+            sinDuplicados.forEach(palabra=>{
+                insertar(titulos[0],numPagina,palabra,1);
+            })
 
-            // numPagina++;
-            writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}|${altImgsStemming}|${autores}|${referencias}|${links}\n`);
+            numPagina++;
+           // writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}|${altImgsStemming}|${autores}|${referencias}|${links}\n`);
 
         }
     }
