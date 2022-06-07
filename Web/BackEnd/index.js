@@ -21,7 +21,7 @@ app.use("/paginas",paginaRoute);
 //Starting the server 
 app.listen(app.get('port'),()=>{ //Va abrir el server en el puerto 3001
     console.log('Server on port',app.get('port'));
-    console.log(mysql);
+   
     
 
 })

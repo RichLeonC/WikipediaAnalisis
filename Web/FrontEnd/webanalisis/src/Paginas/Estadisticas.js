@@ -11,16 +11,15 @@ Chart.register(ArcElement);
 function Estadísticas(){
     const baseUrl = "http://localhost:3001/paginas/2";
     const [data, setData] = useState([]);
-    
+    var información = data.map(el=> el.catchTitulos);
  
 
 
 
-    const peticionGet = async()=>{ //Realiza peticiones Get al backend Periodos
+    const peticionGet = async()=>{ //Realiza peticiones Get al backend 
         await axios.get(baseUrl)
         .then(response=>{
             setData(response.data);
-            console.log(data);
         }).catch(error=>{
             console.log(error);
         })
@@ -32,6 +31,9 @@ function Estadísticas(){
         
         peticionGet();
      }, [])
+
+     console.log(data);
+     console.log(información);
           
     const dataE={
         labels: ['CantidadTitulos', 'CantidadSubtitulos', 'CantidadPalabras'],
@@ -52,7 +54,7 @@ function Estadísticas(){
         
     }
 
-    console.log(data);
+  
     return(
         <div className="Estadistica"  style={{backgroundImage: 'url(https://wallpaper.dog/large/11007600.jpg)', height: "1000px", weight: "2000px", backgroundRepeat: "no-repeat"}}>
          <br></br>
