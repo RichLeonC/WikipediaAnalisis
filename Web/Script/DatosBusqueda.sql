@@ -16,6 +16,9 @@ create table EstadisticaGeneral(
 
 );
 
+
+insert into EstadisticaGeneral values(346, 17835, 234);
+
 drop table  Pagina;
 insert into Pagina values(1,'pag1','hello',2);
 insert into Pagina values(1,'pag1','hello1',5);
@@ -36,6 +39,7 @@ insert into Pagina values(2,'pag1','hello4',5);
  
 select * from Pagina where palabra = 'empir' || palabra = 'english' group by numeroPagina,nombrePagina; 
 select * from Pagina;
+select * from EstadisticaGeneral;
 delete from  Pagina;
 select sum(Pagina.cantidadRe) as cantidad from Pagina where Pagina.numeroPagina = 1;
 select max(Pagina.cantidadRe) as MasVeces from Pagina where Pagina.numeroPagina = 1;

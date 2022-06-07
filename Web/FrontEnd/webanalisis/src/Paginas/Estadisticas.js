@@ -17,7 +17,7 @@ function Estadísticas() {
 
 
 
-    const peticionGet = async () => { //Realiza peticiones Get al backend
+    const peticionGet = async()=>{ //Realiza peticiones Get al backend 
         await axios.get(baseUrl)
             .then(response => {
                 setData(response.data);

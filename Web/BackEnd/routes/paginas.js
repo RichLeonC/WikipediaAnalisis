@@ -27,6 +27,7 @@ router.get('/:pagina/:3', (req, res) => {
         }
     });
 });
+
     
 router.get('/:2',(req,res)=>{ //req es request
     
