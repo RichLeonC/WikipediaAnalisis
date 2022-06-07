@@ -37,8 +37,8 @@ function Estadísticas() {
         labels: ['CantidadTitulos','CantidadPalabras'],
 
         datasets: [{
-            backgroundColor: ['#6C63FF', '#5757AF', '#8F8FC3'],
-            data: [cantidadTitulos,400],
+            backgroundColor: ['#023E8A', '#03045E'],
+            data: [100,400],
            // weight: 1
 
         }]
