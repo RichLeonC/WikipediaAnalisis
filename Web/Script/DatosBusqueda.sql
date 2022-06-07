@@ -9,6 +9,14 @@ cantidadRe int not null,
 primary key (numeroPagina, nombrePagina,palabra,cantidadRe)
 );
 
+create table EstadisticaGeneral(
+	cantTitulos int not null,
+    cantPalabrasDistintas int not null
+    
+    
+
+);
+
 drop table  Pagina;
 insert into Pagina values(1,'pag1','hello',2);
 insert into Pagina values(1,'pag1','hello1',5);
