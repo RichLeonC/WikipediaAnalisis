@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const mySqlConexion = require("../conexionMySQL");
+const mySqlConexion = require("../conexionMySQL.js");
 
 
 
@@ -14,10 +14,9 @@ router.get('/', (req, res) => { //req es request
     });
 });
 
+
 router.get('/:pagina', (req, res) => {
     const { pagina } = req.params;; //Quiero el correo que proviene como parametro en la url
-
-
     mySqlConexion.query('select sum(Pagina.cantidadRe) as cantidad from Pagina where Pagina.numeroPagina = ?',[pagina],
     (error,rows,fields)=>{
         if(!error){
@@ -28,10 +27,10 @@ router.get('/:pagina', (req, res) => {
     });
 });
     
-router.get('/:palabras',(req,res)=>{ //req es request
-    let {palabras} = req.params;
+router.get('/:Estadisticas',(req,res)=>{ //req es request
     
-    mySqlConexion.query('select * from Usuario',(error,rows,fields)=>{
+    
+    mySqlConexion.query('select * from EstadisticaGeneral',(error,rows,fields)=>{
         if(!error){
             res.json(rows);
         }else{
@@ -51,7 +50,7 @@ router.get('/:palabras/:1', (req, res) => { //req es request
     try {
         arrayP.forEach(p=>palabrasStemming.push(natural.PorterStemmer.stem(p)));
 
-        mysqlConexion.query('select * from Pagina where palabra = ? or palabra = ? or palabra = ?', 
+        mySqlConexion.query('select * from Pagina where palabra = ? or palabra = ? or palabra = ?', 
         [palabrasStemming[0],palabrasStemming[1],palabrasStemming[2]], (error, rows, fields) => {
             if (!error) {
                 res.json(rows);
