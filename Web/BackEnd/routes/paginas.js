@@ -30,7 +30,6 @@ router.get('/:pagina/:3', (req, res) => {
     
 router.get('/:2',(req,res)=>{ //req es request
     
-    
     mySqlConexion.query('select * from EstadisticaGeneral',(error,rows,fields)=>{
         if(!error){
             res.json(rows);

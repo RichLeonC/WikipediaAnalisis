@@ -12,8 +12,7 @@ primary key (numeroPagina, nombrePagina,palabra,cantidadRe)
 create table EstadisticaGeneral(
 	cantTitulos int not null,
     cantPalabrasDistintas int not null
-    
-    
+
 
 );
 
@@ -41,5 +40,6 @@ delete from  Pagina;
 select sum(Pagina.cantidadRe) as cantidad from Pagina where Pagina.numeroPagina = 1;
 select max(Pagina.cantidadRe) as MasVeces from Pagina where Pagina.numeroPagina = 1;
 
+insert into EstadisticaGeneral values(25000,15000);
 
 #ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
