@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Chart, ArcElement } from 'chart.js'
+import { Chart, ArcElement, Legend, Tooltip,Title } from 'chart.js'
 import { Doughnut } from 'react-chartjs-2';
 import axios from 'axios';
 import Label from '../componentes/labels/label';
-Chart.register(ArcElement);
+Chart.register(ArcElement, Legend, Tooltip,Title);
 
 
 
 
 function Estadísticas() {
     const baseUrl = "http://localhost:3001/paginas/2";
-    const [data, setData] = useState([]);
-    let cantidadTitulos = data.map(cantidad=>cantidad.cantTitulos);
-    let cantidadPalabras = data.map(cantidad=>cantidad.cantPalabrasDistintas);
+    const [dataP, setData] = useState([]);
+    let cantidadTitulos = dataP.map(cantidad=>cantidad.cantTitulos);
+    let cantidadPalabras = dataP.map(cantidad=>cantidad.cantPalabrasDistintas);
 
 
 
@@ -21,7 +21,7 @@ function Estadísticas() {
         await axios.get(baseUrl)
             .then(response => {
                 setData(response.data);
-                console.log(data);
+                console.log(dataP);
             }).catch(error => {
                 console.log(error);
             })
@@ -33,12 +33,12 @@ function Estadísticas() {
             peticionGet();
     }, []);
 
-    const dataE = {
+    const data = {
         labels: ['CantidadTitulos','CantidadPalabras'],
 
         datasets: [{
             backgroundColor: ['#6C63FF', '#5757AF', '#8F8FC3'],
-            data: [cantidadTitulos,cantidadPalabras],
+            data: [cantidadTitulos,400],
            // weight: 1
 
         }]
@@ -57,7 +57,7 @@ function Estadísticas() {
             <br></br>
             <Label text={'Estadistica General'} />
             <div className="grafico" style={{ weight: "900px", height: "900px", position: "relative", bottom: "-10px" }}>
-                <Doughnut data={dataE} options={opciones} />
+                <Doughnut data={data} options={opciones} />
             </div>
         </div>
     )

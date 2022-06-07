@@ -12,12 +12,11 @@ primary key (numeroPagina, nombrePagina,palabra,cantidadRe)
 create table EstadisticaGeneral(
 	cantTitulos int not null,
     cantPalabrasDistintas int not null
-
-
 );
+drop table EstadisticaGeneral;
 
 
-insert into EstadisticaGeneral values(346, 17835, 234);
+insert into EstadisticaGeneral values(346, 17835);
 
 drop table  Pagina;
 insert into Pagina values(1,'pag1','hello',2);
