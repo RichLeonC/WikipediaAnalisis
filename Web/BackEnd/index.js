@@ -23,6 +23,7 @@ app.listen(app.get('port'),()=>{ //Va abrir el server en el puerto 3001
     console.log('Server on port',app.get('port'));
     console.log(paginaRoute);
     
+
 })
 
 
