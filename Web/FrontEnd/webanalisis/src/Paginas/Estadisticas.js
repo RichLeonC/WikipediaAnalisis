@@ -4,7 +4,9 @@ import { ModalHeader, Modal, ModalBody, Button, Form, Select, ModalFooter } from
 import { Doughnut } from 'react-chartjs-2';
 import axios from 'axios';
 import Label from '../componentes/labels/label';
+import {  useNavigate } from 'react-router-dom';
 Chart.register(ArcElement, Legend, Tooltip, Title);
+
 
 
 
@@ -15,6 +17,7 @@ function Estadísticas() {
     const [dataP, setData] = useState([]);
     const [modal, setModal] = useState(false);
     const [paginas,setPaginas] = useState([]);
+    const navigate = useNavigate();
     let cantidadTitulos = dataP.map(cantidad=>cantidad.cantTitulos);
     let cantidadPalabras = dataP.map(cantidad=>cantidad.cantPalabrasDistintas);
     let cantidadActivos = dataP.map(cantidad=>cantidad.cantLinksActivos);
@@ -22,6 +25,10 @@ function Estadísticas() {
     let cantReferencias = dataP.map(cantidad=>cantidad.cantReferencias);
     let cantImgAlt = dataP.map(cantidad=>cantidad.cantImgAlt);
     let cantImg = dataP.map(cantidad=>cantidad.cantImg);
+
+    function volver(){
+        navigate('/');
+    };
 
 
     const abrirCerrarModal = () => {
@@ -82,12 +89,16 @@ function Estadísticas() {
                 <Label text={'Estadistica General'} />
                 <div className="grafico" style={{ weight: "600px", height: "600px", position: "relative", bottom: "-40px" }}>
                     <Doughnut data={data} options={opciones} />
+                    <br></br>
+                    <button className="boton-container" onClick={volver}>
+                        Volver
+                    </button>
                 </div>
 
             </div>
 
              <div style={{ margin: '1rem', position: 'relative', bottom: '55rem' }}>
-                <button className="btn btn-primary" onClick={()=>abrirCerrarModal()}>Palabras Más Comunes</button>
+                <button className="boton-container" onClick={()=>abrirCerrarModal()}>Palabras Más Comunes</button>
             </div> 
 
 
@@ -121,6 +132,8 @@ function Estadísticas() {
                     <Button className="btn btn-primary" size="sm" onClick={() => abrirCerrarModal()}>Cerrar</Button>
                 </ModalFooter>
             </Modal> 
+            
+         
         </div>
     )
 
