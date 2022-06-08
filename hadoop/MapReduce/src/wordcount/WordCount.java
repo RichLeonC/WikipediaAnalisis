@@ -39,117 +39,117 @@ public class WordCount {
                 value.set(titulos.nextToken());
                 context.write(value, new IntWritable(1));
                 cantidadTotal++; //aumenta el contador cada vez que agrega un titulo
-           }//hasta aquí solo agarra titulos______________________________________________________________*/
+           }
             
             context.write(new Text("Cantidad titulos"), new IntWritable(cantidadTotal)); // se agrega el contador
             //Columna Subtitulos
             int finSubtitulos = line.indexOf("|", finTitulos + 1);  // No comentar para que funcionen las demas                   
-//            String celdaSubtitulos = line.substring(finTitulos, finSubtitulos);
-//            StringTokenizer subtitulos = new StringTokenizer(celdaSubtitulos, ",");
+            String celdaSubtitulos = line.substring(finTitulos, finSubtitulos);
+            StringTokenizer subtitulos = new StringTokenizer(celdaSubtitulos, ",");
             
-//            while(subtitulos.hasMoreTokens()) {
-//                value.set(subtitulos.nextToken());
-//                context.write(value, new IntWritable(1));
-//            }//Hasta aqui subtitulos_______________________________________________________________________*/
+            while(subtitulos.hasMoreTokens()) {
+                value.set(subtitulos.nextToken());
+                context.write(value, new IntWritable(1));
+            }
             
             //Columna Parrafos
             int finParrafos = line.indexOf("|", finSubtitulos + 1); // No comentar para que funcionen las demas
-//            String celdaParrafos = line.substring(finSubtitulos, finParrafos);
-//            StringTokenizer parrafos = new StringTokenizer(celdaParrafos, ",");
+            String celdaParrafos = line.substring(finSubtitulos, finParrafos);
+            StringTokenizer parrafos = new StringTokenizer(celdaParrafos, ",");
             
-//            while(parrafos.hasMoreTokens()) {
-//                value.set(parrafos.nextToken());
-//                context.write(value, new IntWritable(1));
-//            }
+            while(parrafos.hasMoreTokens()) {
+                value.set(parrafos.nextToken());
+                context.write(value, new IntWritable(1));
+            }
             
             //Columna parrafosStemming
-//            int finParrafosStemming = line.indexOf("|", finParrafos + 1); // No comentar para que funcionen las demas
-//            String celdaParrafosStemming = line.substring(finParrafos, finParrafosStemming);
-//            StringTokenizer parrafosStemming = new StringTokenizer(celdaParrafosStemming, ",");
+            int finParrafosStemming = line.indexOf("|", finParrafos + 1); // No comentar para que funcionen las demas
+            String celdaParrafosStemming = line.substring(finParrafos, finParrafosStemming);
+            StringTokenizer parrafosStemming = new StringTokenizer(celdaParrafosStemming, ",");
             
-//            while(parrafosStemming.hasMoreTokens()) {
-//                value.set(parrafosStemming.nextToken());
-//                context.write(value, new IntWritable(1));
-//            }
+            while(parrafosStemming.hasMoreTokens()) {
+                value.set(parrafosStemming.nextToken());
+                context.write(value, new IntWritable(1));
+            }
 
             //Columna TitulosStemming
-//            int finTitulosStemming = line.indexOf("|", finParrafosStemming + 1); // No comentar para que funcionen las demas
-//            String celdaTitulosStemming = line.substring(finParrafosStemming, finTitulosStemming);
-//            StringTokenizer titulosStemming = new StringTokenizer(celdaTitulosStemming, ",");
-//            
-//            while(titulosStemming.hasMoreTokens()) {
-//                value.set(titulosStemming.nextToken());
-//                context.write(value, new IntWritable(1));
-//            }
+            int finTitulosStemming = line.indexOf("|", finParrafosStemming + 1); // No comentar para que funcionen las demas
+            String celdaTitulosStemming = line.substring(finParrafosStemming, finTitulosStemming);
+            StringTokenizer titulosStemming = new StringTokenizer(celdaTitulosStemming, ",");
             
+            while(titulosStemming.hasMoreTokens()) {
+                value.set(titulosStemming.nextToken());
+                context.write(value, new IntWritable(1));
+            }
+          
             //Columna SubtitulosStemming
-//            int finSubtitulosStemming = line.indexOf("|", finTitulosStemming + 1); // No comentar para que funcionen las demas
-//            String celdaSubtitulosStemming = line.substring(finTitulosStemming, finSubtitulosStemming);
-//            StringTokenizer subtitulosStemming = new StringTokenizer(celdaSubtitulosStemming, ",");
+            int finSubtitulosStemming = line.indexOf("|", finTitulosStemming + 1); // No comentar para que funcionen las demas
+            String celdaSubtitulosStemming = line.substring(finTitulosStemming, finSubtitulosStemming);
+            StringTokenizer subtitulosStemming = new StringTokenizer(celdaSubtitulosStemming, ",");
             
-//            while(subtitulosStemming.hasMoreTokens()) {
-//                value.set(subtitulosStemming.nextToken());
-//                context.write(value, new IntWritable(1));
-//            }
+            while(subtitulosStemming.hasMoreTokens()) {
+                value.set(subtitulosStemming.nextToken());
+                context.write(value, new IntWritable(1));
+            }
 
             //Columna SrcImages
-//            int finSrcImages = line.indexOf("|", finSubtitulosStemming + 1); // No comentar para que funcionen las demas
-//            String celdaSrcImages = line.substring(finSubtitulosStemming, finSrcImages);
-//            StringTokenizer srcImages = new StringTokenizer(celdaSrcImages, ",");
-//            
-//            while(srcImages.hasMoreTokens()) {
-//                value.set(srcImages.nextToken());
-//                context.write(value, new IntWritable(1));
-//            }
+            int finSrcImages = line.indexOf("|", finSubtitulosStemming + 1); // No comentar para que funcionen las demas
+            String celdaSrcImages = line.substring(finSubtitulosStemming, finSrcImages);
+            StringTokenizer srcImages = new StringTokenizer(celdaSrcImages, ",");
+            
+            while(srcImages.hasMoreTokens()) {
+                value.set(srcImages.nextToken());
+                context.write(value, new IntWritable(1));
+            }
 
             //Columna altImages
-//            int finAltImages = line.indexOf("|", finSrcImages + 1); // No comentar para que funcionen las demas
-//            String celdaAltImages = line.substring(finSrcImages, finAltImages);
-//            StringTokenizer altImages = new StringTokenizer(celdaAltImages, ",");
+            int finAltImages = line.indexOf("|", finSrcImages + 1); // No comentar para que funcionen las demas
+            String celdaAltImages = line.substring(finSrcImages, finAltImages);
+            StringTokenizer altImages = new StringTokenizer(celdaAltImages, ",");
             
-//            while(altImages.hasMoreTokens()) {
-//                value.set(altImages.nextToken());
-//               context.write(value, new IntWritable(1));
-//            }
+            while(altImages.hasMoreTokens()) {
+                value.set(altImages.nextToken());
+               context.write(value, new IntWritable(1));
+            }
 
             //Columna altImagesStemming
-//            int finAltImagesStemming = line.indexOf("|", finAltImages + 1); // No comentar para que funcionen las demas
-//            String celdaAltImagesStemming = line.substring(finAltImages, finAltImagesStemming);
-//            StringTokenizer altImagesStemming = new StringTokenizer(celdaAltImagesStemming, ",");
+            int finAltImagesStemming = line.indexOf("|", finAltImages + 1); // No comentar para que funcionen las demas
+            String celdaAltImagesStemming = line.substring(finAltImages, finAltImagesStemming);
+            StringTokenizer altImagesStemming = new StringTokenizer(celdaAltImagesStemming, ",");
             
-//            while(altImagesStemming.hasMoreTokens()) {
-//                value.set(altImagesStemming.nextToken());
-//                context.write(value, new IntWritable(1));
-//            }
+            while(altImagesStemming.hasMoreTokens()) {
+                value.set(altImagesStemming.nextToken());
+                context.write(value, new IntWritable(1));
+            }
 
             //Columna autores
-//            int finAutores = line.indexOf("|", finAltImagesStemming + 1); // No comentar para que funcionen las demas
-//            String celdaAutores = line.substring(finAltImagesStemming, finAutores);
-//            StringTokenizer autores = new StringTokenizer(celdaAutores, ",");
-//            
-//            while(autores.hasMoreTokens()) {
-//                value.set(autores.nextToken());
-//                context.write(value, new IntWritable(1));
-//            }
+            int finAutores = line.indexOf("|", finAltImagesStemming + 1); // No comentar para que funcionen las demas
+            String celdaAutores = line.substring(finAltImagesStemming, finAutores);
+            StringTokenizer autores = new StringTokenizer(celdaAutores, ",");
+            
+            while(autores.hasMoreTokens()) {
+                value.set(autores.nextToken());
+                context.write(value, new IntWritable(1));
+            }
 
             //Columna referencias
-//            int finReferencias = line.indexOf("|", finAutores + 1); // No comentar para que funcionen las demas
-//            String celdaReferencias = line.substring(finAutores, finReferencias);
-//            StringTokenizer referencias = new StringTokenizer(celdaReferencias, ",");
+            int finReferencias = line.indexOf("|", finAutores + 1); // No comentar para que funcionen las demas
+            String celdaReferencias = line.substring(finAutores, finReferencias);
+            StringTokenizer referencias = new StringTokenizer(celdaReferencias, ",");
             
-//            while(referencias.hasMoreTokens()) {
-//                value.set(referencias.nextToken());
-//                context.write(value, new IntWritable(1));
-//            }
+            while(referencias.hasMoreTokens()) {
+                value.set(referencias.nextToken());
+                context.write(value, new IntWritable(1));
+            }
             
             //Columna Links (aquí no se necesita un index "finLinks porque ya solo debe seguir hasta que se acabe el texto
-//            String celdaLinks = line.substring(finReferencias);
-//            StringTokenizer links = new StringTokenizer(celdaLinks, ",");
+            String celdaLinks = line.substring(finReferencias);
+            StringTokenizer links = new StringTokenizer(celdaLinks, ",");
             
-//            while(links.hasMoreTokens()) {
-//                value.set(links.nextToken());
-//                context.write(value, new IntWritable(1));
-//            }
+            while(links.hasMoreTokens()) {
+                value.set(links.nextToken());
+                context.write(value, new IntWritable(1));
+            }
         }
     }
 
@@ -168,25 +168,7 @@ public class WordCount {
 
     public static void main(String[] args) throws IOException,
             ClassNotFoundException, InterruptedException {
-        /*
-        Path input_dir = new Path("hdfs://localhost:9870/user/wikyviky.csv");
-        Path output_dir = new Path("hdfs://localhost:9000/user/user_salida/");
-        
-        Configuration conf = new Configuration();
-        Job job = new Job(conf, "WordCount");
-        
-        job.setJarByClass(WordCount.class);
-        job.setMapperClass(Map.class);
-        job.setReducerClass(Reduce.class);
-        job.setMapOutputKeyClass(Text.class);
-        job.setMapOutputValueClass(IntWritable.class);
-        
-        FileInputFormat.addInputPath(job, input_dir);
-        FileOutputFormat.setOutputPath(job, output_dir);
-        output_dir.getFileSystem(job.getConfiguration()).delete(output_dir, true);
-        
-        System.exit(job.waitForCompletion(true) ? 0: 1);
-         */
+       
         Configuration conf = new Configuration();
 
         Job job = Job.getInstance(conf, "WordCount");
