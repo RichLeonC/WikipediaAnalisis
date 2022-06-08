@@ -173,41 +173,41 @@ async function inicio() {
 
             //Obtiene todos los titulos y subtitulos
             titulos = obtenerTitulos($);
-            subtitulos = obtenerSubTitulos($);
+          /*   subtitulos = obtenerSubTitulos($);
             titulosStemming = obtenerTitulosStemming($);
             subTitulosStemming = obtenerSubTitulosStemming($);
             autores = obtenerAutores($);
             referencias = obtenerReferencias($);
-            links = obtenerLiks($);
+            links = obtenerLiks($); */
             //obtener todo el texto de la página
             const texto = obtenerParrafos($);
             palabrasParrafoStemming = obtenerParrafosStemming(texto);
 
-            srcImgs = obtenerImagenes($, 'src');
-            altImgs = obtenerImagenes($, 'alt');
-            altImgsStemming = stemmingTitulosSub(altImgs);
+            // srcImgs = obtenerImagenes($, 'src');
+            // altImgs = obtenerImagenes($, 'alt');
+            // altImgsStemming = stemmingTitulosSub(altImgs);
 
-            //Para llenar el SQL 
-            // sinDuplicados = palabrasParrafoStemming.filter((item,index)=>{
-            //     return palabrasParrafoStemming.indexOf(item) === index;
-            // })
-            // let repetidas = 0;
-            // for (const p in palabrasParrafoStemming) {
-            //     if(sinDuplicados.includes(palabrasParrafoStemming[p])){
-            //         repetidas++;
-            //     }
-            //     else{
-            //         insertar(titulos[0],numPagina,palabrasParrafoStemming[p],repetidas);
+           // Para llenar el SQL 
+            sinDuplicados = palabrasParrafoStemming.filter((item,index)=>{
+                return palabrasParrafoStemming.indexOf(item) === index;
+            })
+            let repetidas = 0;
+            for (const p in palabrasParrafoStemming) {
+                if(sinDuplicados.includes(palabrasParrafoStemming[p])){
+                    repetidas++;
+                }
+                else{
+                    insertar(titulos[0],numPagina,palabrasParrafoStemming[p],repetidas);
 
-            //     }
-            // }
+                }
+            }
 
-            // sinDuplicados.forEach(palabra=>{
-            //     insertar(titulos[0],numPagina,palabra,1);
-            // })
+            sinDuplicados.forEach(palabra=>{
+                insertar(titulos[0],numPagina,palabra,1);
+            })
 
-            // numPagina++;
-            writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}|${altImgsStemming}|${autores}|${referencias}|${links}\n`);
+            numPagina++;
+           // writeStream.write(`${titulos}|${subtitulos}|${texto}|${palabrasParrafoStemming}|${titulosStemming}|${subTitulosStemming}|${srcImgs}|${altImgs}|${altImgsStemming}|${autores}|${referencias}|${links}\n`);
 
         }
     }
