@@ -29,7 +29,7 @@ router.get('/', (req, res) => { //req es request
 // });
 
     
-router.get('/:2',(req,res)=>{ //req es request
+router.get('/2',(req,res)=>{ //req es request
     
     mySqlConexion.query('select * from EstadisticaGeneral',(error,rows,fields)=>{
         if(!error){
@@ -64,7 +64,16 @@ router.get('/:palabras/:1', (req, res) => { //req es request
         console.log(e);
     }
 
-
+    router.get('/all',(req,res)=>{ //req es request
+    
+        mySqlConexion.query('select * from Pagina order by cantidadRe desc limit 10',(error,rows,fields)=>{
+            if(!error){
+                res.json(rows);
+            }else{
+                console.log(error);
+            }
+        });
+    });
 
 });
 
