@@ -11,7 +11,7 @@ Chart.register(ArcElement, Legend, Tooltip, Title);
 
 function Estadísticas() {
     const baseUrl = "http://localhost:3001/paginas/2";
-    const baseUrlPaginas = 'http://localhost:3001/paginas/todo'
+    const baseUrlPaginas = 'http://localhost:3001/paginas/all'
     const [dataP, setData] = useState([]);
     const [modal, setModal] = useState(false);
     const [paginas,setPaginas] = useState([]);
