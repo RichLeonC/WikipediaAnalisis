@@ -13,6 +13,11 @@ function Estadísticas() {
     const [dataP, setData] = useState([]);
     let cantidadTitulos = dataP.map(cantidad=>cantidad.cantTitulos);
     let cantidadPalabras = dataP.map(cantidad=>cantidad.cantPalabrasDistintas);
+    let cantidadActivos = dataP.map(cantidad=>cantidad.cantLinksActivos);
+    let cantidadNoActivos = dataP.map(cantidad=> cantidad.cantLinksNoActivos);
+    let cantReferencias = dataP.map(cantidad=>cantidad.cantReferencias);
+    let cantImgAlt = dataP.map(cantidad=>cantidad.cantImgAlt);
+    let cantImg = dataP.map(cantidad=>cantidad.cantImg);
 
 
 
@@ -34,12 +39,14 @@ function Estadísticas() {
     }, []);
 
     const data = {
-        labels: ['CantidadTitulos','CantidadPalabras'],
+        labels: ['CantidadTitulos','CantidadPalabras','Links','NoActivos', 'Referencias','CantidadAlts','CantidadImagenes'],
 
         datasets: [{
-            backgroundColor: ['#023E8A', '#03045E'],
-            data: [100,400],
-           // weight: 1
+            backgroundColor: ['#023E8A', '#03045E','#4d3d66', '#85b1f9',' #99374b',
+            '#2c1421',' #a34647' ],
+            data: [cantidadTitulos,cantidadPalabras,cantidadActivos,cantidadNoActivos,
+                cantReferencias,cantImgAlt,cantImg],
+            weight: 1
 
         }]
 
@@ -56,7 +63,7 @@ function Estadísticas() {
         <div className="Estadistica" style={{ backgroundImage: 'url(https://wallpaper.dog/large/11007600.jpg)', height: "1000px", weight: "2000px", backgroundRepeat: "no-repeat" }}>
             <br></br>
             <Label text={'Estadistica General'} />
-            <div className="grafico" style={{ weight: "900px", height: "900px", position: "relative", bottom: "-10px" }}>
+            <div className="grafico" style={{ weight: "50px", height: "50px", position: "relative", bottom: "-10px" }}>
                 <Doughnut data={data} options={opciones} />
             </div>
         </div>
