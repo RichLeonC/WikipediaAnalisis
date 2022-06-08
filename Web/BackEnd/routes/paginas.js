@@ -16,17 +16,17 @@ router.get('/', (req, res) => { //req es request
 });
 
 
-// router.get('/:pagina/:3', (req, res) => {
-//     const { pagina } = req.params;; //Quiero el correo que proviene como parametro en la url
-//     mySqlConexion.query('select sum(Pagina.cantidadRe) as cantidad from Pagina where Pagina.numeroPagina = ?',[pagina],
-//     (error,rows,fields)=>{
-//         if(!error){
-//             res.json(rows[0]);
-//         }else{
-//             console.log(error);
-//         }
-//     });
-// });
+/* router.get('/:pagina/:3', (req, res) => {
+    const { pagina } = req.params;; //Quiero el correo que proviene como parametro en la url
+    mySqlConexion.query('select sum(Pagina.cantidadRe) as cantidad from Pagina where Pagina.numeroPagina = ?',[pagina],
+    (error,rows,fields)=>{
+        if(!error){
+            res.json(rows[0]);
+        }else{
+            console.log(error);
+        }
+    });
+}); */
 
     
 router.get('/:2',(req,res)=>{ //req es request
