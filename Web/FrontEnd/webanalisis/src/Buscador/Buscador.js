@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './buscador.css'
+import {  useNavigate } from 'react-router-dom';
+
 
 export default function Buscador() {
   const baseUrl = "http://localhost:3001/paginas";
   const [data, setData] = useState([]);
   const [paginas, setPaginas] = useState([]);
+  const navigate = useNavigate();
   const Searcher = async (e) => {
     const palabra = e.target.value;
     setData(palabra);
@@ -28,6 +31,10 @@ export default function Buscador() {
       })
   }
 
+  function volver(){
+    navigate('/');
+  };
+
 
   return (
     <div className='fondo' style={{ backgroundImage: 'url(https://wallpaper.dog/large/11007600.jpg)', height: "1000px", weight: "2000px", backgroundRepeat: "no-repeat" }}>
@@ -37,7 +44,7 @@ export default function Buscador() {
           style={{ width: "25rem", height: "3rem", fontSize: '25px', marginTop: "2rem" }}
           onChange={Searcher}></input>
         <br></br>
-        <button className="buton-container" > Estadistica </button>
+        <button className="buton-container" onClick={volver} > Volver </button>
       </div>
         <table className="table table-striped table-dark mt-2 offset-md-3 col-sm-10" style={{ color: "white", position:'absolute',right:'10rem', top:"21rem"}}>
           <thead>
