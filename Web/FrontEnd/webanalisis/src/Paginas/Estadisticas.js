@@ -11,7 +11,7 @@ Chart.register(ArcElement, Legend, Tooltip, Title);
 
 function Estadísticas() {
     const baseUrl = "http://localhost:3001/paginas/2";
-    const baseUrlPaginas = 'http://localhost:3001/paginas/all'
+    const baseUrlPaginas = 'http://localhost:3001/paginas/todo'
     const [dataP, setData] = useState([]);
     const [modal, setModal] = useState(false);
     const [paginas,setPaginas] = useState([]);
@@ -80,7 +80,7 @@ function Estadísticas() {
             <div className="Estadistica" style={{ backgroundImage: 'url(https://wallpaper.dog/large/11007600.jpg)', height: "1000px", weight: "2000px", backgroundRepeat: "no-repeat" }}>
                 <br></br>
                 <Label text={'Estadistica General'} />
-                <div className="grafico" style={{ weight: "900px", height: "900px", position: "relative", bottom: "-10px" }}>
+                <div className="grafico" style={{ weight: "600px", height: "600px", position: "relative", bottom: "-40px" }}>
                     <Doughnut data={data} options={opciones} />
                 </div>
 
