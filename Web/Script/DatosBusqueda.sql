@@ -33,6 +33,6 @@ select sum(Pagina.cantidadRe) as cantidad from Pagina where Pagina.numeroPagina 
 select max(Pagina.cantidadRe) as MasVeces from Pagina where Pagina.numeroPagina = 1;
 
 select * from Pagina order by cantidadRe desc limit 10;
-insert into EstadisticaGeneral values(25000,15000);
+insert into EstadisticaGeneral values(47364,92455,9342,63456,4392,8783,46321);
 
 #ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';

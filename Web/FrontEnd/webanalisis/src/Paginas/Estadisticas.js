@@ -15,8 +15,13 @@ function Estadísticas() {
     const [dataP, setData] = useState([]);
     const [modal, setModal] = useState(false);
     const [paginas,setPaginas] = useState([]);
-    let cantidadTitulos = dataP.map(cantidad => cantidad.cantTitulos);
-    let cantidadPalabras = dataP.map(cantidad => cantidad.cantPalabrasDistintas);
+    let cantidadTitulos = dataP.map(cantidad=>cantidad.cantTitulos);
+    let cantidadPalabras = dataP.map(cantidad=>cantidad.cantPalabrasDistintas);
+    let cantidadActivos = dataP.map(cantidad=>cantidad.cantLinksActivos);
+    let cantidadNoActivos = dataP.map(cantidad=> cantidad.cantLinksNoActivos);
+    let cantReferencias = dataP.map(cantidad=>cantidad.cantReferencias);
+    let cantImgAlt = dataP.map(cantidad=>cantidad.cantImgAlt);
+    let cantImg = dataP.map(cantidad=>cantidad.cantImg);
 
 
     const abrirCerrarModal = () => {
@@ -50,12 +55,14 @@ function Estadísticas() {
     }, []);
 
     const data = {
-        labels: ['CantidadTitulos', 'CantidadPalabras'],
+        labels: ['CantidadTitulos','CantidadPalabras','Links','NoActivos', 'Referencias','CantidadAlts','CantidadImagenes'],
 
         datasets: [{
-            backgroundColor: ['#023E8A', '#03045E'],
-            data: [cantidadTitulos, cantidadPalabras],
-            // weight: 1
+            backgroundColor: ['#023E8A', '#03045E','#4d3d66', '#85b1f9',' #99374b',
+            '#2c1421',' #a34647' ],
+            data: [cantidadTitulos,cantidadPalabras,cantidadActivos,cantidadNoActivos,
+                cantReferencias,cantImgAlt,cantImg],
+            weight: 1
 
         }]
 
